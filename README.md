@@ -1,2 +1,2 @@
-# springBoard
+# Spring-Rest
  spring REST Board
