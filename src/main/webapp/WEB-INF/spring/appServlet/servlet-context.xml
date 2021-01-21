@@ -21,8 +21,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.hoseong.springboard" />
-	
-	
+	<!-- spring bean 을 태그로 등록하지 않고 자동으로 검색(auto scan) -->
+	<context:component-scan base-package="com.hoseong.spring" />
 	
 </beans:beans>
