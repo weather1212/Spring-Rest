@@ -1,4 +1,4 @@
-package com.hoseong.spring.vo;
+package com.hoseong.spring.vo.board;
 
 import java.util.Date;
 
