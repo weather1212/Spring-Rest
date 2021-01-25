@@ -1,6 +1,8 @@
 package com.hoseong.spring.controller.board;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -26,14 +28,38 @@ public class BoardController {
 
 	// 게시글 목록
 	@RequestMapping("list")
-	public ModelAndView list() throws Exception {
-		List<BoardVO> list = boardService.listAll();
+	// @RequestParam(defaultValue = "") ==> 파라미터가 넘어오지않을 시 ""를 기본값으로 할당
+	public ModelAndView list(@RequestParam(defaultValue = "title") String searchOption,
+			@RequestParam(defaultValue = "") String keyword) throws Exception {
+		List<BoardVO> list = boardService.listAll(searchOption, keyword);
+		
+		System.out.println("조건 : " + searchOption);
+		System.out.println("키워드 : " + keyword);
 
+		// 레코드의 개수
+		int count = boardService.countArticle(searchOption, keyword);
+
+		System.out.println("레코드 개수 : " + count);
+		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("board/list"); // 뷰를 list.jsp로 설정
-		mav.addObject("list", list); // 데이터를 저장
 
-		return mav; // lis.jsp 로 list 전달
+//		mav.addObject("list", list);
+//		mav.addObject("count", count);
+//		mav.addObject("searchOption", searchOption);
+//		mav.addObject("keyword", keyword);
+
+		// 데이터를 map으로 묶어서 저장
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		map.put("list", list); // list
+		map.put("count", count); // 레코드의 개수
+		map.put("searchOption", searchOption); // 검색 옵션
+		map.put("keyword", keyword); // 검색 키워드
+
+		mav.addObject("map", map); // map에 저장된 데이터를 mav에 저장
+		mav.setViewName("board/list"); // 뷰를 list.jsp로 설정
+
+		return mav; // lis.jsp 로 list 전달 (뷰에서 ${list} 사용)
 	}
 
 	// 게시글 작성 화면
@@ -81,12 +107,12 @@ public class BoardController {
 
 		return "redirect:list";
 	}
-	
-	//게시글 삭제
+
+	// 게시글 삭제
 	@RequestMapping("delete")
 	public String delete(@RequestParam int bno) throws Exception {
 		boardService.deleteBoard(bno);
-		
+
 		return "redirect:list";
 	}
 

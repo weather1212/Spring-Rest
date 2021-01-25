@@ -63,8 +63,14 @@ public class BoardServiceImpl implements BoardService {
 
 	// 게시글 전체 목록
 	@Override
-	public List<BoardVO> listAll() throws Exception {
-		return boardDAO.listAll();
+	public List<BoardVO> listAll(String searchOption, String keyword) throws Exception {
+		return boardDAO.listAll(searchOption, keyword);
+	}
+
+	// 게시글 레코드 개수
+	@Override
+	public int countArticle(String searchOption, String keyword) throws Exception {
+		return boardDAO.countArticle(searchOption, keyword);
 	}
 
 	// 게시글 조회수 증가

@@ -1,6 +1,8 @@
 package com.hoseong.spring.dao.board;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -19,7 +21,7 @@ public class BoardDAOImpl implements BoardDAO {
 	// 게시글 작성
 	@Override
 	public void writeBoard(BoardVO boardVO) throws Exception {
-		sqlSession.insert("boardMapper.wirte", boardVO);
+		sqlSession.insert("boardMapper.write", boardVO);
 	}
 
 	// 게시글 상세 조회
@@ -42,8 +44,24 @@ public class BoardDAOImpl implements BoardDAO {
 
 	// 게시글 목록 조회
 	@Override
-	public List<BoardVO> listAll() throws Exception {
-		return sqlSession.selectList("boardMapper.listAll");
+	public List<BoardVO> listAll(String searchOption, String keyword) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		
+		return sqlSession.selectList("boardMapper.listAll", map);
+	}
+	
+	// 게시글 레코드 개수 메소드 추가
+	@Override
+	public int countArticle(String searchOption, String keyword) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		
+		return sqlSession.selectOne("boardMapper.countArticle", map);
 	}
 
 	// 게시글 조회수
@@ -51,5 +69,6 @@ public class BoardDAOImpl implements BoardDAO {
 	public void increaseViewcnt(int bno) throws Exception {
 		sqlSession.update("boardMapper.increaseViewcnt", bno);
 	}
+
 
 }
