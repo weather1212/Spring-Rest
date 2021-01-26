@@ -7,5 +7,7 @@
 	<typeAliases>
 		<typeAlias type="com.hoseong.spring.vo.board.BoardVO"
 			alias="BoardVO" />
+		<typeAlias type="com.hoseong.spring.vo.member.MemberVO"
+			alias="MemberVO" />
 	</typeAliases>
 </configuration>
