@@ -39,7 +39,7 @@
 <body>
 	<%@ include file="../include/menu.jsp"%>
 	<h2>게시글 작성</h2>
-	<form name="form1" method="post" action="${path}/board/write">
+	<form name="form1" method="post" action="${path}/board/writeAction">
 		<div>
 			제목 <input name="title" id="title" size="80" placeholder="제목을 입력해주세요">
 		</div>
