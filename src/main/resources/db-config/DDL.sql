@@ -16,10 +16,10 @@ increment by 1;
 
 -- member 테이블 생성
 create table member (
-userid varchar2(50) not null CONSTRAINT member_userid_pk primary key,
-userpw varchar2(50) not null,
-username varchar2(50),
-useremail varchar2(200) not null,
-userregdate date default sysdate,
-userupdatedate date
+user_id varchar2(50) not null CONSTRAINT member_userid_pk primary key,
+user_pw varchar2(50) not null,
+user_name varchar2(50),
+user_email varchar2(200) not null,
+user_regdate date default sysdate,
+user_updatedate date
 );
