@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.hoseong</groupId>
 	<artifactId>spring</artifactId>
-	<name>Spring-Rest</name>
+	<name>Spring-Shop</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
