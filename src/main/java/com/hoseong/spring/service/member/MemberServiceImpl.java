@@ -47,5 +47,21 @@ public class MemberServiceImpl implements MemberService {
 		// 세션 정보를 초기화
 		session.invalidate();
 	}
+	
+	// 회원 가입
+	@Override
+	public boolean join(MemberVO vo) {
+		
+		if (memberDao.join(vo) == 1) {
+			return true;
+		}
+		return false;
+	}
+
+	//아이디 중복체크
+	@Override
+	public int idCheck(String userId) {
+		return memberDao.idCheck(userId);
+	}
 
 }

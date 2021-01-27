@@ -59,4 +59,10 @@ public class MemberVO {
 		this.userUpdatedate = userUpdatedate;
 	}
 
+	@Override
+	public String toString() {
+		return "MemberVO [userId=" + userId + ", userPw=" + userPw + ", userName=" + userName + ", userEmail="
+				+ userEmail + ", userRegdate=" + userRegdate + ", userUpdatedate=" + userUpdatedate + "]";
+	}
+
 }

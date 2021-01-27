@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" >
 <title>게시글 작성</title>
 <%@ include file="../include/header.jsp"%>
 <script>
@@ -38,7 +39,7 @@
 </head>
 <body>
 	<%@ include file="../include/menu.jsp"%>
-	<h2>게시글 작성</h2>
+	<h2>POST</h2>
 	<form name="form1" method="post" action="${path}/board/writeAction">
 		<div>
 			제목 <input name="title" id="title" size="80" placeholder="제목을 입력해주세요">

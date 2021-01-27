@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" >
 <title>게시글 작성</title>
 <%@ include file="../include/header.jsp"%>
 <script>
@@ -46,7 +47,7 @@
 </head>
 <body>
 	<%@ include file="../include/menu.jsp"%>
-	<h2>게시글 보기</h2>
+	<h2>BOARD</h2>
 	<form name="form1" method="post">
 		<div>
 			<!-- 원하는 날짜형식으로 출력하기 위해 fmt태그 사용 -->

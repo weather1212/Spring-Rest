@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" >
 <title>게시글 목록</title>
 <%@ include file="../include/header.jsp"%>
 <script>
@@ -17,7 +18,7 @@
 </head>
 <body>
 	<%@ include file="../include/menu.jsp"%>
-	<h2>게시글 목록</h2>
+	<h2>Board list</h2>
 	<form name="form1" method="post" action="${path}/board/list.do">
 		<select name="searchOption">
 			<!-- 검색조건을 검색처리후 결과화면에 보여주기위해  c:out 출력태그 사용, 삼항연산자 -->

@@ -31,11 +31,27 @@ public class MemberDAOImpl implements MemberDAO {
 	// 회원 로그인 정보
 	@Override
 	public MemberVO viewMember(MemberVO vo) {
-		return sqlSession.selectOne("memberMapper.viewmember", vo);
+		return sqlSession.selectOne("memberMapper.viewMember", vo);
 	}
 
 	// 회원 로그아웃
 	@Override
 	public void logout(HttpSession session) {
+	}
+
+	// 회원 가입
+	@Override
+	public int join(MemberVO vo) {
+		
+		System.out.println(vo);
+		
+		return sqlSession.insert("memberMapper.join", vo) ;
+	}
+
+	//아이디 중복체크
+	@Override
+	public int idCheck(String userId) {
+		System.out.println("중복확인 아이디 service -> dao : " + userId);
+		return sqlSession.selectOne("memberMapper.idCheck", userId);
 	}
 }

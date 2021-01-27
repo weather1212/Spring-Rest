@@ -20,5 +20,17 @@
 		WHERE user_id = #{userId} AND user_pw = #{userPw}
 	</select>
 
+	<insert id="join">
+		INSERT INTO member (user_id, user_pw, user_name, user_email)
+		VALUES (#{userId}, #{userPw}, #{userName}, #{userEmail})
+	</insert>
+
+	<select id="idCheck" parameterType="String" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM member
+		WHERE user_id = #{userId}
+	</select>
+
 </mapper>
  

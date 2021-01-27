@@ -17,5 +17,11 @@ public interface MemberService {
 
 	// 회원 로그아웃
 	public void logout(HttpSession session);
+	
+	// 회원 가입
+	public boolean join(MemberVO vo);
+	
+	// 아이디 중복체크
+	public int idCheck(String userId);
 
 }
