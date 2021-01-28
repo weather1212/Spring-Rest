@@ -10,7 +10,7 @@
 	$(document).ready(function() {
 		$("#btnDelete").click(function() {
 			if (confirm("삭제하시겠습니까?")) {
-				document.form1.action = "${path}/board/delete.do";
+				document.form1.action = "${path}/board/delete";
 				document.form1.submit();
 			}
 		});
@@ -43,7 +43,7 @@
 		});
 		$("#btnList").click(function() {
 			if (confirm("게시글 목록으로 돌아가시겠습니다까?")) {
-				location.href = "list";
+				location.href = "${path}/board/list?curPage${curPage}&searchOption=${serchOption}&keyword=${keyword}";
 			}
 		});
 	});
@@ -66,13 +66,14 @@
 				placeholder="이름을 입력해주세요"> --%>
 			${dto.userName }
 		</div>
+		<hr>
 		<div>
 			제목
 			<input name="title" id="title" size="80" value="${dto.title}" placeholder="제목을 입력해주세요">
 		</div>
+		<br>
 		<div>
-			내용
-			<textarea name="content" id="content" rows="4" cols="80" placeholder="내용을 입력해주세요">${dto.content}</textarea>
+			<textarea name="content" id="content" rows="20" cols="88" placeholder="내용을 입력해주세요">${dto.content}</textarea>
 		</div>
 		<div style="width: 650px; text-align: center;">
 			<!-- 게시물번호를 hidden으로 처리 -->
