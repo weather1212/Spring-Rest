@@ -9,12 +9,14 @@
 
 	<!-- 게시글 전체목록 조화 맟 검색 조회 -->
 	<select id="listAll" resultType="BoardVO">
+		<include refid="pagingHeader" />
 		SELECT bno, title, content, writer, regdate, viewcnt, user_name AS
 		userName
 		FROM board, member
 		<!-- WHERE절을 include로 삽입 -->
 		<include refid="search" />
-		ORDER BY bno desc, regdate desc
+		ORDER BY bno desc, regdate DESC
+		<include refid="pagingFooter" />
 	</select>
 
 	<!-- 게시글 레코드 개수 -->
@@ -26,13 +28,15 @@
 
 	<!-- sql code 조각 -->
 	<!-- 반복되는 sql의 일부를 sql태그를 이용해 따로 관리 -->
+	<!-- 검색 조건 sql -->
 	<sql id="search">
 		<choose>
 			<!-- 검색옵션이 전체 검색일 경우 -->
 			<when test="searchOption == 'all'">
 				WHERE board.writer = member.user_id
 				AND (
-				user_name like '%'||#{keyword}||'%'
+				user_name
+				like '%'||#{keyword}||'%'
 				OR content like '%'||#{keyword}||'%'
 				OR
 				title like '%'||#{keyword}||'%')
@@ -41,9 +45,20 @@
 			<!-- 검색옵션이 전체 검색이 아닐 경우 -->
 			<otherwise>
 				WHERE board.writer = member.user_id
-				AND (${searchOption} like '%'||#{keyword}||'%')
+				AND (${searchOption}
+				like '%'||#{keyword}||'%')
 			</otherwise>
 		</choose>
+	</sql>
+
+	<!-- 페이징 sql -->
+	<sql id="pagingHeader">
+		SELECT * FROM (
+		SELECT ROWNUM AS rn, A.* FROM (
+	</sql>
+	<sql id="pagingFooter">
+		) A
+		)WHERE rn BETWEEN #{start} AND #{end}
 	</sql>
 
 	<!-- 02. 게시글 작성 -->
@@ -62,7 +77,8 @@
 	</insert>
 	<!--03. 게시글 상세보기 조회 -->
 	<select id="detail" resultType="BoardVO">
-		SELECT bno, title, content, writer, regdate, viewcnt, user_name as userName
+		SELECT bno, title, content,
+		writer, regdate, viewcnt, user_name as userName
 		FROM board, member
 		WHERE board.writer = member.user_id
 		AND bno = #{bno}

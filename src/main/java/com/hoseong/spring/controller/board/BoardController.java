@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hoseong.spring.service.board.BoardPagination;
 import com.hoseong.spring.service.board.BoardService;
 import com.hoseong.spring.vo.board.BoardVO;
 
@@ -30,15 +31,21 @@ public class BoardController {
 	@RequestMapping("list")
 	// @RequestParam(defaultValue = "") ==> 파라미터가 넘어오지않을 시 ""를 기본값으로 할당
 	public ModelAndView list(@RequestParam(defaultValue = "title") String searchOption,
-			@RequestParam(defaultValue = "") String keyword) throws Exception {
-		List<BoardVO> list = boardService.listAll(searchOption, keyword);
+			@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") int curPage) throws Exception {
+		
+		//레코드의 개수 계산
+		int count = boardService.countArticle(searchOption, keyword);
+		
+		//페이징 처리
+		BoardPagination boardPagination = new BoardPagination(count, curPage);
+		int start = boardPagination.getPageBegin();
+		int end = boardPagination.getPageEnd();
+		
+		List<BoardVO> list = boardService.listAll(start, end, searchOption, keyword);
 
+		System.out.println("현재 페이지 : " + curPage);
 		System.out.println("조건 : " + searchOption);
 		System.out.println("키워드 : " + keyword);
-
-		// 레코드의 개수
-		int count = boardService.countArticle(searchOption, keyword);
-
 		System.out.println("레코드 개수 : " + count);
 
 		ModelAndView mav = new ModelAndView();
@@ -55,6 +62,7 @@ public class BoardController {
 		map.put("count", count); // 레코드의 개수
 		map.put("searchOption", searchOption); // 검색 옵션
 		map.put("keyword", keyword); // 검색 키워드
+		map.put("boardPagination", boardPagination);
 
 		mav.addObject("map", map); // map에 저장된 데이터를 mav에 저장
 		mav.setViewName("board/list"); // 뷰를 list.jsp로 설정

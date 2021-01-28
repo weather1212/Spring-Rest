@@ -21,7 +21,7 @@ public interface BoardService {
 	public void deleteBoard(int bno) throws Exception;
 
 	// 게시글 전체 목록
-	public List<BoardVO> listAll(String searchOption, String keyword) throws Exception;
+	public List<BoardVO> listAll(int start, int end, String searchOption, String keyword) throws Exception;
 	
 	// 게시글 레코드 갯수 메서드 추가
 	public int countArticle(String searchOption, String keyword) throws Exception;
