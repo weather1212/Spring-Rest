@@ -32,7 +32,7 @@ public class BoardController {
 	public ModelAndView list(@RequestParam(defaultValue = "title") String searchOption,
 			@RequestParam(defaultValue = "") String keyword) throws Exception {
 		List<BoardVO> list = boardService.listAll(searchOption, keyword);
-		
+
 		System.out.println("조건 : " + searchOption);
 		System.out.println("키워드 : " + keyword);
 
@@ -40,7 +40,7 @@ public class BoardController {
 		int count = boardService.countArticle(searchOption, keyword);
 
 		System.out.println("레코드 개수 : " + count);
-		
+
 		ModelAndView mav = new ModelAndView();
 
 //		mav.addObject("list", list);
@@ -72,8 +72,11 @@ public class BoardController {
 
 	// 게시글 작성 처리
 	@RequestMapping(value = "writeAction", method = RequestMethod.POST)
-	public String writeAction(@ModelAttribute BoardVO vo) throws Exception {
-
+	public String writeAction(@ModelAttribute BoardVO vo, HttpSession session) throws Exception {
+		// session에 저장된 userId를 writer에 저장
+		String writer = (String) session.getAttribute("userId");
+		// vo에 writer 세팅
+		vo.setWriter(writer);
 		boardService.writeBoard(vo);
 
 		return "redirect:list";

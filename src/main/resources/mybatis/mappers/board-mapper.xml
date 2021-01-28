@@ -9,8 +9,9 @@
 
 	<!-- 게시글 전체목록 조화 맟 검색 조회 -->
 	<select id="listAll" resultType="BoardVO">
-		SELECT bno, title, content, writer, regdate, viewcnt
-		FROM board
+		SELECT bno, title, content, writer, regdate, viewcnt, user_name AS
+		userName
+		FROM board, member
 		<!-- WHERE절을 include로 삽입 -->
 		<include refid="search" />
 		ORDER BY bno desc, regdate desc
@@ -18,7 +19,7 @@
 
 	<!-- 게시글 레코드 개수 -->
 	<select id="countArticle" resultType="int">
-		SELECT COUNT(*) FROM board
+		SELECT COUNT(*) FROM board, member
 		<!-- WHERE절을 include로 삽입 -->
 		<include refid="search" />
 	</select>
@@ -29,14 +30,18 @@
 		<choose>
 			<!-- 검색옵션이 전체 검색일 경우 -->
 			<when test="searchOption == 'all'">
-				WHERE writer like '%'||#{keyword}||'%'
+				WHERE board.writer = member.user_id
+				AND (
+				user_name like '%'||#{keyword}||'%'
 				OR content like '%'||#{keyword}||'%'
-				OR title like '%'||#{keyword}||'%'
+				OR
+				title like '%'||#{keyword}||'%')
 			</when>
 
 			<!-- 검색옵션이 전체 검색이 아닐 경우 -->
 			<otherwise>
-				WHERE ${searchOption} like '%'||#{keyword}||'%'
+				WHERE board.writer = member.user_id
+				AND (${searchOption} like '%'||#{keyword}||'%')
 			</otherwise>
 		</choose>
 	</sql>
@@ -57,9 +62,10 @@
 	</insert>
 	<!--03. 게시글 상세보기 조회 -->
 	<select id="detail" resultType="BoardVO">
-		SELECT * FROM board
-		WHERE bno =
-		#{bno}
+		SELECT bno, title, content, writer, regdate, viewcnt, user_name as userName
+		FROM board, member
+		WHERE board.writer = member.user_id
+		AND bno = #{bno}
 	</select>
 	<!-- 04. 게시글 조회수 증가처리 -->
 	<update id="increaseViewcnt">
