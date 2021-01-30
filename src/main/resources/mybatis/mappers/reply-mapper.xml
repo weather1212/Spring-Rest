@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="replyMapper">
+	<!-- <resultMap type="" id=""></resultMap> -->
+
+	<!-- 댓글 입력 -->
+	<insert id="write">
+		INSERT INTO reply (rno, bno, replytext, replyer)
+		VALUES (reply_seq.NEXTVAL, #{bno}, #{replytext}, #{replyer})
+	</insert>
+
+	<!-- 댓글 목록 -->
+	<select id="listReply" resultType="ReplyVO">
+		SELECT rno, bno, replytext,
+		replyer, user_name AS userName, r.regdate, r.updatedate
+		FROM reply r,
+		member m
+		WHERE r.replyer = m.user_id AND bno=#{bno}
+		ORDER BY rno
+	</select>
+
+</mapper>
+ 

@@ -8,6 +8,30 @@
 <%@ include file="../include/header.jsp"%>
 <script>
 	$(document).ready(function() {
+		
+// 		listReply();	// **댓글 목록 불러오기
+		listReply2();	// **json 리턴 방식
+		
+		// **댓글 쓰기 버튼 클릭 이벤트 (ajax)로 처리
+		$("#btnReply").click(function() {
+			var replytext=$("#replytext").val();
+			var bno = "${dto.bno}"
+			var param = "replytext=" + replytext + "&bno=" + bno;	//ajax를 통해 보낼 데이터
+			$.ajax({
+				type: "post",
+				url: "${path}/reply/write",
+				data: param,
+				success: function() {
+					alert("댓글이 등록되었습니다.")
+					listReply2();
+				},
+				error: function() {
+					console.log("데이터 전송에 실패했습니다.");
+				}
+				
+			});
+		});
+		
 		$("#btnDelete").click(function() {
 			if (confirm("삭제하시겠습니까?")) {
 				document.form1.action = "${path}/board/delete";
@@ -47,6 +71,55 @@
 			}
 		});
 	});
+	
+	// **댓글목록
+	// Controller 방식
+	function listReply() {
+		$.ajax({
+			type: "get",
+			url: "${path}/reply/list?bno=${dto.bno}",
+			seccess: function(result) {
+				// responseText가 result에 저장됨
+				$("#listReply").html(result);
+			}
+			
+		});
+	}
+	// RestController 방식 (json)
+	function listReply2() {
+		$.ajax({
+			type: "get",
+			// contentType: "application/json", ==> RestController이기 때문에 생략가능
+			url: "${path}/reply/listJson?bno=${dto.bno}",
+			success: function(result) {
+				console.log(result);
+				var printout = "<table>";
+				for(var i in result){
+					printout += "<tr>";
+					printout += "<td><br>" + result[i].userName;
+					printout += "(" + changeDate(result[i].regdate) + ")<br>";
+					printout += result[i].replytext + "</td>";
+					printout += "<tr>";
+				}
+				printout += "</table>";
+				$("#listReply").html(printout);
+			}
+		});
+		
+	}
+	// **날짜 변환 함수 작성
+	function changeDate(date) {
+		date = new Date(parseInt(date));
+		year = date.getFullYear();
+		month = date.getMonth();
+		day = date.getDate();
+		hour = date.getHours();
+		minute = date.getMinutes();
+		second = date.getSeconds();
+		strDate = year + "-" + month + "-" + day + "-" + hour + ":" + minute + ":" +second;
+		
+		return strDate;
+	}
 </script>
 </head>
 <body>
@@ -86,5 +159,20 @@
 			<button type="button" id="btnList">목록으로</button>
 		</div>
 	</form>
+	
+	<!-- 댓글 섹션 -->
+	<div style="width:650px;">
+		<br>
+		<!-- **로그인한 화원에게만 댓글 작성 폼이 보이게 처리 -->
+		<c:if test="${sessionScope.userId != null }">
+			<hr>
+			<textarea rows="5" cols="50" id="replytext" placeholder="comment here!"></textarea>
+			<br>
+			<button type="button" id="btnReply">댓글 달기</button>
+			<hr>
+		</c:if>
+	</div>
+	<!-- 댓글 목록을 출력할 위치 -->
+	<div id="listReply"></div>
 </body>
 </html>

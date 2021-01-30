@@ -10,8 +10,9 @@
 	<!-- 게시글 전체목록 조화 맟 검색 조회 -->
 	<select id="listAll" resultType="BoardVO">
 		<include refid="pagingHeader" />
-		SELECT bno, title, content, writer, regdate, viewcnt, user_name AS
-		userName
+		SELECT bno, title, content, writer, regdate, viewcnt, user_name AS userName, 
+		<!-- **댓글 숫자 표시 -->
+		(SELECT COUNT(*) FROM reply WHERE bno=board.bno) AS recnt
 		FROM board, member
 		<!-- WHERE절을 include로 삽입 -->
 		<include refid="search" />

@@ -10,7 +10,9 @@ public class BoardVO {
 	private String writer; // 게시글 작성자
 	private Date regdate; // 게시글 작성일자 util.Date
 	private int viewcnt; // 게시글 조회수
+
 	private String userName; // 게시글 회원 이름 = 게시글 작성자
+	private int recnt; // 해당 게시글의 댓글 수
 
 	public int getBno() {
 		return bno;
@@ -68,5 +70,12 @@ public class BoardVO {
 		this.userName = userName;
 	}
 
-	
+	public int getRecnt() {
+		return recnt;
+	}
+
+	public void setRecnt(int recnt) {
+		this.recnt = recnt;
+	}
+
 }

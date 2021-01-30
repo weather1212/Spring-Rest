@@ -15,8 +15,11 @@
 	});
 	// 원하는 페이지로 이동시 검색조건, 키워드 값을 유지하기 위해
 	function list(page) {
-		location.href = "${path}/board/list?curPage=" + page + "&searchOption=${map.serchOption}&keyword=${map.keyword}"
-		location.href = "${path}/board/list?curPage=" + page + "&searchOption-${map.searchOption}"+"&keyword=${map.keyword}";
+		location.href = "${path}/board/list?curPage=" + page
+				+ "&searchOption=${map.serchOption}&keyword=${map.keyword}"
+		location.href = "${path}/board/list?curPage=" + page
+				+ "&searchOption-${map.searchOption}"
+				+ "&keyword=${map.keyword}";
 	}
 </script>
 </head>
@@ -40,7 +43,7 @@
 	</form>
 	<!-- 레코드의 갯수를 출력 -->
 	${map.count}개의 게시물이 있습니다.
-	<table border="1" width="800px" style="text-align: center;" >
+	<table border="1" width="800px" style="text-align: center;">
 		<tr style="white-space: nowrap;">
 			<th>번호</th>
 			<th>제목</th>
@@ -55,7 +58,12 @@
 				<td style="text-align: left;">
 					<a
 						href="${path}/board/view?bno=${row.bno}&curPage=${map.boardPagination.curPage}&searchOption=${map.searchOption}&keyword=${map.keyword}"
-					>${row.title}</a>
+					>${row.title}
+						<!--  **댓글이 있으면 게시글 이름 옆에 댓글 개수 출력 -->
+						<c:if test="${row.recnt > 0 }">
+							<span style="color: black;">(${row.recnt })</span>
+						</c:if>
+					</a>
 				</td>
 				<td>${row.userName}</td>
 				<td>
@@ -79,7 +87,8 @@
 
 				<!-- **하나의 블럭에서 반복문 수행 시작페이지부터 끝페이지까지 -->
 				<c:forEach var="num" begin="${map.boardPagination.blockBegin }"
-					end="${map.boardPagination.blockEnd }">
+					end="${map.boardPagination.blockEnd }"
+				>
 					<!-- **현재페이지면 하이퍼링크 제거 -->
 					<c:choose>
 						<c:when test="${num == map.boardPagination.curPage }">
