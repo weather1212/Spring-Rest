@@ -1,6 +1,8 @@
 package com.hoseong.spring.dao.board;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -17,14 +19,19 @@ public class ReplyDAOImpl implements ReplyDAO {
 
 	// 댓글 목록
 	@Override
-	public List<ReplyVO> list(Integer bno) {
-		return sqlSession.selectList("replyMapper.listReply", bno);
+	public List<ReplyVO> list(Integer bno, int start, int end) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("bno", bno);
+		map.put("start", start);
+		map.put("end", end);
+
+		return sqlSession.selectList("replyMapper.listReply", map);
 	}
 
 	// 댓글 입력
 	@Override
 	public void write(ReplyVO vo) {
-		sqlSession.insert("replyMapper.write", vo);
+		sqlSession.insert("replyMapper.writeReply", vo);
 	}
 
 	// 댓글 수정
@@ -37,6 +44,12 @@ public class ReplyDAOImpl implements ReplyDAO {
 	@Override
 	public void delete(Integer rno) {
 		sqlSession.delete("replyMapper.delete", rno);
+	}
+
+	// 댓글 개수
+	@Override
+	public int count(int bno) {
+		return sqlSession.selectOne("replyMapper.countReply", bno);
 	}
 
 }

@@ -41,9 +41,12 @@
 			<button type="button" id="btnWrite">글쓰기</button>
 		</c:if>
 	</form>
+	<hr><br>
 	<!-- 레코드의 갯수를 출력 -->
 	${map.count}개의 게시물이 있습니다.
-	<table border="1" width="800px" style="text-align: center;">
+	<br>
+	<br>
+	<table border="1" width="800px" style="text-align: center; border-collapse: collapse;">
 		<tr style="white-space: nowrap;">
 			<th>번호</th>
 			<th>제목</th>
@@ -58,10 +61,8 @@
 				<td style="text-align: left;">
 					<a
 						href="${path}/board/view?bno=${row.bno}&curPage=${map.boardPagination.curPage}&searchOption=${map.searchOption}&keyword=${map.keyword}"
-					>${row.title}
-						<!--  **댓글이 있으면 게시글 이름 옆에 댓글 개수 출력 -->
-						<c:if test="${row.recnt > 0 }">
-							<span style="color: black;">(${row.recnt })</span>
+					>${row.title} <!--  **댓글이 있으면 게시글 이름 옆에 댓글 개수 출력 --> <c:if test="${row.recnt > 0 }">
+							<span style="color: green;">(${row.recnt })</span>
 						</c:if>
 					</a>
 				</td>

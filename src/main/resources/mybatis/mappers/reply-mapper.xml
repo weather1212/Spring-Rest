@@ -7,20 +7,40 @@
 	<!-- <resultMap type="" id=""></resultMap> -->
 
 	<!-- 댓글 입력 -->
-	<insert id="write">
-		INSERT INTO reply (rno, bno, replytext, replyer)
-		VALUES (reply_seq.NEXTVAL, #{bno}, #{replytext}, #{replyer})
+	<insert id="writeReply">
+		INSERT INTO reply (rno, bno, replytext, replyer, secret_reply)
+		VALUES (reply_seq.NEXTVAL, #{bno}, #{replytext}, #{replyer}, #{secretReply})
 	</insert>
 
 	<!-- 댓글 목록 -->
 	<select id="listReply" resultType="ReplyVO">
-		SELECT rno, bno, replytext,
-		replyer, user_name AS userName, r.regdate, r.updatedate
-		FROM reply r,
-		member m
-		WHERE r.replyer = m.user_id AND bno=#{bno}
+		<!-- SELECT rno, bno, replytext, replyer, user_name AS userName, r.regdate, 
+			r.updatedate FROM reply r, member m WHERE r.replyer = m.user_id AND bno=#{bno} 
+			ORDER BY rno -->
+		<include refid="pagingHeader" />
+		SELECT r.rno, bno, r.replytext, r.replyer, r.secret_reply AS secretReply, r.regdate, r.updatedate, m.user_name AS userName,
+		(SELECT writer FROM board WHERE bno = r.bno) AS writer
+		FROM reply r, member m
+		WHERE r.replyer = m.user_id AND bno = #{bno}
 		ORDER BY rno
+		<include refid="pagingFooter" />
 	</select>
+
+	<!-- 댓글 개수 -->
+	<select id="countReply" resultType="int">
+		SELECT COUNT(*) FROM reply
+		WHERE bno = #{bno}
+	</select>
+
+	<!-- 페이징 sql -->
+	<sql id="pagingHeader">
+		SELECT *
+		FROM (SELECT ROWNUM AS rn, A.* FROM (
+	</sql>
+	<sql id="pagingFooter">
+		) A
+		)WHERE rn BETWEEN #{start} AND #{end}
+	</sql>
 
 </mapper>
  

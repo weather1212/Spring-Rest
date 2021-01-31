@@ -94,7 +94,8 @@ public class BoardController {
 	// @RequestMapping : get/post 방식으로 전달된 변수 1개
 	// HttpSession 세션 객체
 	@RequestMapping(value = "view", method = RequestMethod.GET)
-	public ModelAndView view(@RequestParam int bno, HttpSession session) throws Exception {
+	public ModelAndView view(@RequestParam int bno, @RequestParam(defaultValue = "title") String searchOption,
+			@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") int curPage, HttpSession session) throws Exception {
 
 		// 조회수 증가
 		boardService.increaseViewcnt(bno, session);
@@ -103,6 +104,13 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 
 		mav.setViewName("board/view"); // 뷰 이름
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		map.put("curPage", curPage);
+		
+		mav.addObject("map", map); // 뷰에 전달할 데이터
 		mav.addObject("dto", boardService.readBoard(bno)); // 뷰에 전달할 데이터
 
 		return mav;

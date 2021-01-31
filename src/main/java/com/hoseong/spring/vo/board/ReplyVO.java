@@ -11,6 +11,9 @@ public class ReplyVO {
 	private String userName; // 댓글 작성자의 이름(회원의 이름)
 	private Date regdate; // 댓글 작성 일자
 	private Date updatedate; // 댓글 수정일자
+	// **비밀댓글
+	private String secretReply; // **댓글 숨김 유무 추가
+	private String writer; // 댓글이 달린 게시글의 작성자 추가
 
 	public Integer getBno() {
 		return bno;
@@ -68,10 +71,27 @@ public class ReplyVO {
 		this.updatedate = updatedate;
 	}
 
+	public String getSecretReply() {
+		return secretReply;
+	}
+
+	public void setSecretReply(String secretReply) {
+		this.secretReply = secretReply;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+
 	@Override
 	public String toString() {
 		return "ReplyVO [bno=" + bno + ", rno=" + rno + ", replytext=" + replytext + ", replyer=" + replyer
-				+ ", userName=" + userName + ", regdate=" + regdate + ", updatedate=" + updatedate + "]";
+				+ ", userName=" + userName + ", regdate=" + regdate + ", updatedate=" + updatedate + ", secretReply="
+				+ secretReply + ", writer=" + writer + "]";
 	}
 
 }
