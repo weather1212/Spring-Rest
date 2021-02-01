@@ -8,8 +8,10 @@
 
 	<!-- 댓글 입력 -->
 	<insert id="writeReply">
-		INSERT INTO reply (rno, bno, replytext, replyer, secret_reply)
-		VALUES (reply_seq.NEXTVAL, #{bno}, #{replytext}, #{replyer}, #{secretReply})
+		INSERT INTO reply (rno, bno, replytext, replyer,
+		secret_reply)
+		VALUES (reply_seq.NEXTVAL, #{bno}, #{replytext},
+		#{replyer}, #{secretReply})
 	</insert>
 
 	<!-- 댓글 목록 -->
@@ -18,8 +20,10 @@
 			r.updatedate FROM reply r, member m WHERE r.replyer = m.user_id AND bno=#{bno} 
 			ORDER BY rno -->
 		<include refid="pagingHeader" />
-		SELECT r.rno, bno, r.replytext, r.replyer, r.secret_reply AS secretReply, r.regdate, r.updatedate, m.user_name AS userName,
-		(SELECT writer FROM board WHERE bno = r.bno) AS writer
+		SELECT r.rno, bno, r.replytext, r.replyer, r.secret_reply AS
+		secretReply, r.regdate, r.updatedate, m.user_name AS userName,
+		(SELECT
+		writer FROM board WHERE bno = r.bno) AS writer
 		FROM reply r, member m
 		WHERE r.replyer = m.user_id AND bno = #{bno}
 		ORDER BY rno
@@ -32,6 +36,30 @@
 		WHERE bno = #{bno}
 	</select>
 
+	<!-- 댓글 상세보기 -->
+	<select id="detailReply" resultType="ReplyVO">
+		SELECT rno, bno, replytext,
+		replyer, updatedate, secret_reply AS secretReply
+		FROM reply
+		WHERE rno =
+		#{rno}
+	</select>
+
+	<!-- 댓글 수정 -->
+	<select id="updateReply">
+		UPDATE reply
+		SET replytext = #{replytext}
+		WHERE rno =
+		#{rno}
+	</select>
+
+	<!-- 댓글 삭제 -->
+	<delete id="deleteReply">
+		DELETE FROM reply
+		WHERE rno = #{rno}
+	</delete>
+
+
 	<!-- 페이징 sql -->
 	<sql id="pagingHeader">
 		SELECT *
@@ -41,6 +69,5 @@
 		) A
 		)WHERE rn BETWEEN #{start} AND #{end}
 	</sql>
-
 </mapper>
  

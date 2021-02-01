@@ -96,7 +96,6 @@ public class BoardController {
 	@RequestMapping(value = "view", method = RequestMethod.GET)
 	public ModelAndView view(@RequestParam int bno, @RequestParam(defaultValue = "title") String searchOption,
 			@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") int curPage, HttpSession session) throws Exception {
-
 		// 조회수 증가
 		boardService.increaseViewcnt(bno, session);
 
@@ -114,7 +113,6 @@ public class BoardController {
 		mav.addObject("dto", boardService.readBoard(bno)); // 뷰에 전달할 데이터
 
 		return mav;
-
 	}
 
 	// 게시글 수정

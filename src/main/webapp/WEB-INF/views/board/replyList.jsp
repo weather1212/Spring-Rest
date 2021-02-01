@@ -7,14 +7,19 @@
 <%@ include file="../include/header.jsp"%>
 </head>
 <body>
-	(controller방식)
+	(replyList.jsp 로 포워드)
 	<table style="width: 700px">
 		<c:forEach var="row" items="${list }">
 			<tr>
 				<td>
 					<br> ${row.userName} (
 					<fmt:formatDate value="${row.regdate }" pattern="yyyy-MM-dd HH:mm:ss" />
-					) <br> ${row.replytext }
+					) <br> ${row.replytext } <br>
+					<c:if test="${sessionScope.userId == row.replyer}">
+						<input type="button" id="btnModify" value="수정"
+							onclick="showReplyModify('${row.rno}')"
+						>
+					</c:if>
 					<hr>
 				</td>
 			</tr>
@@ -54,6 +59,10 @@
 				<c:if test="${replyPagination.curPage < replyPagination.totPage }">
 					<a href="javascript:listReply('${replyPagination.totPage }')">[&#62;&#62;]</a>
 				</c:if>
+			</td>
+		</tr>
 	</table>
+	<!-- 댓글 수정 영역 -->
+	<div id="modifyReply"></div>
 </body>
 </html>

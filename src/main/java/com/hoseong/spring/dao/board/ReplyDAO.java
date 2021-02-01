@@ -23,5 +23,8 @@ public interface ReplyDAO {
 	
 	// 댓글 개수
 	public int count(int bno);
+	
+	// 댓글 상세보기
+	public ReplyVO detail(Integer rno);
 
 }

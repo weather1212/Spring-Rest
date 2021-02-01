@@ -37,19 +37,25 @@ public class ReplyDAOImpl implements ReplyDAO {
 	// 댓글 수정
 	@Override
 	public void update(ReplyVO vo) {
-		sqlSession.update("replyMaper.update", vo);
+		sqlSession.update("replyMapper.updateReply", vo);
 	}
 
 	// 댓글 삭제
 	@Override
 	public void delete(Integer rno) {
-		sqlSession.delete("replyMapper.delete", rno);
+		sqlSession.delete("replyMapper.deleteReply", rno);
 	}
 
 	// 댓글 개수
 	@Override
 	public int count(int bno) {
 		return sqlSession.selectOne("replyMapper.countReply", bno);
+	}
+
+	// 댓글 상세보기
+	@Override
+	public ReplyVO detail(Integer rno) {
+		return sqlSession.selectOne("replyMapper.detailReply", rno);
 	}
 
 }

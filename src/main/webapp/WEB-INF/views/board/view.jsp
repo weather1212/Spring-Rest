@@ -8,16 +8,9 @@
 <%@ include file="../include/header.jsp"%>
 <script>
 	$(document).ready(function() {
-		// 댓글 목록
-		listReply("1");	// **forwarding 방식
-// 		listReply2();	// **json 리턴 방식
-		
-		// **댓글 쓰기
-		$("#btnReply").click(function() {
-			//reply();		// 파라미터로 입력
-			replyJson();	// json으로 입력
-		});
 
+		// ===============================게시글 관련 ====================================
+		// 게시글 삭제
 		$("#btnDelete").click(function() {
 			if (confirm("삭제하시겠습니까?")) {
 				document.form1.action = "${path}/board/delete";
@@ -25,6 +18,7 @@
 			}
 		});
 
+		// 게시글 수정
 		$("#btnUpdete").click(function() {
 			//var title = document.form1.title.value; ==> name속성으로 처리할 경우
 			//var content = document.form1.content.value;
@@ -51,13 +45,27 @@
 			// 폼에 입력한 데이터를 서버로 전송
 			document.form1.submit();
 		});
+		// 게시를 목록으로 이동
 		$("#btnList").click(function() {
 			console.log("curPage=${map.curPage}&searchOption=${map.serchOption}&keyword=${map.keyword}");
 			if (confirm("게시글 목록으로 돌아가시겠습니다까?")) {
 				location.href = "${path}/board/list?curPage=${map.curPage}&searchOption=${map.serchOption}&keyword=${map.keyword}";
 			}
 		});
+		
+		// ==================댓글 관련 ===========================
+		// 댓글 목록
+// 		listReply("1");	// **forwarding 방식
+// 		listReply2();	// **json 리턴 방식
+		listReplyRest("1");	// **Rest 방식
+		
+		// **댓글 쓰기
+		$("#btnReply").click(function() {
+			//reply();		// 파라미터로 입력
+			replyJson();	// json으로 입력
+		});
 	});
+	
 	
 	// **댓글 쓰기========================================
 	// 파라미터 전달 방식 댓글쓰기
@@ -114,8 +122,9 @@
 				alert("댓글이 등록되었습니다.")
 				console.log("ajax success: " + msg);
 				// **추가된 댓글 목록 ajax요청
-				listReply("1");		// forward(@Controller)
-// 				listReply2();	// json 리턴(@ReseteController)
+// 				listReply("1");		// forward(@Controller)
+// 				listReply2();		// json 리턴(@ReseteController)
+				listReplyRest("1");	// Rest 방식
 			},
 			error: function(request, status, error) {	//status-상태, error-에러 내용
 				console.log("데이터 전송에 실패했습니다. : " + "status : " + request.status + ", error : " + error);
@@ -179,7 +188,46 @@
 		
 		return strDate;
 	}
+	
+	// **댓글 목록 - Rest 방식 ====================================
+	function listReplyRest(num) {
+		$.ajax({
+			type: "get",
+			url: "${path}/reply/list/${dto.bno}/" + num,
+			success: function(result) {
+// 				console.log("댓글 목록 ajax 성공 : " + result);
+				//responseText가 result에 저장됨
+				$("#listReply").html(result);
+			},
+			error: function(request, status, error) {	//status-상태, error-에러 내용
+				console.log("댓글 목록 불러오기에 실패했습니다. : " + "status : " + request.status + ", error : " + error);
+			}
+		});
+	}
+	// **댓글 수정 화면 생성 함수
+	function showReplyModify(rno) {
+		$.ajax({
+			type: "get",
+			url: "${path}/reply/detail/" + rno,
+			success: function(result) {
+				$("#modifyReply").html(result);
+				// 태그.css("속성", "값")
+				$("#modifyReply").css("visibility", "visible");
+			}
+		});
+	}
 </script>
+<style type="text/css">
+#modifyReply {
+	width: 600px;
+	height: 130px;
+	background-color: #90909050;
+	padding: 10px;
+	z-index: 10px;
+	visibility: hidden;
+}
+
+</style>
 </head>
 <body>
 	<%@ include file="../include/menu.jsp"%>
@@ -234,6 +282,6 @@
 		</c:if>
 	</div>
 	<!-- 댓글 목록을 출력할 위치 -->
-	<div id="listReply"></div>
+	<div id="listReply"></div> 
 </body>
 </html>

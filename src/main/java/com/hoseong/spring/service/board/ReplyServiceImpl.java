@@ -33,7 +33,7 @@ public class ReplyServiceImpl implements ReplyService {
 					String writer = vo.getWriter(); // 게시물 작성자
 					String replyer = vo.getReplyer(); // 댓글 작성자
 					// 로그인한 사용자가 게시물, 댓글 작성자 둘 다 아니면 비밀댓글로 처리
-					if(!userId.equals(writer) && !userId.equals(replyer)) {
+					if (!userId.equals(writer) && !userId.equals(replyer)) {
 						vo.setReplytext("비밀 댓글입니다.");
 					}
 				}
@@ -60,9 +60,16 @@ public class ReplyServiceImpl implements ReplyService {
 		replyDAO.delete(rno);
 	}
 
+	// 댓글 개수
 	@Override
 	public int count(int bno) {
 		return replyDAO.count(bno);
+	}
+
+	// 댓글 상세보기
+	@Override
+	public ReplyVO detail(Integer rno) {
+		return replyDAO.detail(rno);
 	}
 
 }
