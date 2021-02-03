@@ -12,6 +12,14 @@
 		// ===============================게시글 관련 ====================================
 		// 게시글 삭제
 		$("#btnDelete").click(function() {
+			var replyCount = ${map.replyCount };
+			console.log(replyCount);
+			// 댓글의 개수가 0보다 크면 팝업, 함수 종료
+			if(replyCount > 0) {
+				alert("댓글이 있는 게시물은 삭제할 수 없습니다.")
+				return;
+			}
+			// 댓글의 개수가 0이면 삭제처리
 			if (confirm("삭제하시겠습니까?")) {
 				document.form1.action = "${path}/board/delete";
 				document.form1.submit();

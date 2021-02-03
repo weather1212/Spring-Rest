@@ -35,6 +35,11 @@ regdate date default sysdate,
 updatedate date
 );
 
+-- reply bno 외래키 생성 (board(bno)참조)
+ALTER TABLE reply
+ADD CONSTRAINT reply_bno_fk
+FOREIGN KEY(bno) REFERENCES board(bno);
+
 -- reply rno 시퀀스 생성
 create sequence reply_seq
 start with 1

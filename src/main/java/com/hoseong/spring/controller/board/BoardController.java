@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hoseong.spring.service.board.BoardPagination;
 import com.hoseong.spring.service.board.BoardService;
+import com.hoseong.spring.service.board.ReplyService;
 import com.hoseong.spring.vo.board.BoardVO;
 
 @Controller // 현재 클래스 빈 등록
@@ -26,6 +27,9 @@ public class BoardController {
 	// IoC 의존관계 역전
 	@Inject
 	BoardService boardService;
+	
+	@Inject	//ReplyService 주입(ReplyService의 댓글 개수를 구하는 메서드 호출
+	ReplyService replyService;
 
 	// 게시글 목록
 	@RequestMapping("list")
@@ -96,18 +100,17 @@ public class BoardController {
 	@RequestMapping(value = "view", method = RequestMethod.GET)
 	public ModelAndView view(@RequestParam int bno, @RequestParam(defaultValue = "title") String searchOption,
 			@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") int curPage, HttpSession session) throws Exception {
-		// 조회수 증가
-		boardService.increaseViewcnt(bno, session);
+		
+		boardService.increaseViewcnt(bno, session);	// 조회수 증가
 
-		// 모델(데이터) + 뷰(화면)를 같이 전달
-		ModelAndView mav = new ModelAndView();
-
+		ModelAndView mav = new ModelAndView();	// 모델(데이터) + 뷰(화면)를 같이 전달
 		mav.setViewName("board/view"); // 뷰 이름
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("searchOption", searchOption);
 		map.put("keyword", keyword);
 		map.put("curPage", curPage);
+		map.put("replyCount", replyService.count(bno));	//댓글 개수를 맵에 저장 : 댓글이 존재하는 게시물 삭제처리 방지
 		
 		mav.addObject("map", map); // 뷰에 전달할 데이터
 		mav.addObject("dto", boardService.readBoard(bno)); // 뷰에 전달할 데이터
