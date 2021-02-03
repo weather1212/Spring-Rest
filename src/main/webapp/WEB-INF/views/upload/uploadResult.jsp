@@ -7,8 +7,10 @@
 <%@ include file="../include/header.jsp"%>
 </head>
 <body>
-	<%@ include file="../include/menu.jsp"%>
-	파일이 업로드 되었습니다.
-	파일명 : ${saveName }
+	파일이 업로드 되었습니다. 파일명 : ${saveName }
+	<script type="text/javascript">
+		var result = "${saveName}";
+		parent.addFilePath(result); //파일명을 부모페이지로 전달
+	</script>
 </body>
 </html>

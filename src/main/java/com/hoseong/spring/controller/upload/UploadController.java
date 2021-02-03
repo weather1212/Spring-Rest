@@ -2,6 +2,7 @@ package com.hoseong.spring.controller.upload;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -32,13 +33,15 @@ public class UploadController {
 	}
 
 	@RequestMapping(value = "/upload/uploadForm", method = RequestMethod.POST)
-	public ModelAndView updateForm(MultipartFile file, ModelAndView mav) throws IOException {
+	public ModelAndView updateForm(MultipartFile file, ModelAndView mav) throws Exception {
 
 		logger.info("파일이름 : " + file.getOriginalFilename());
 		logger.info("파일크기 : " + file.getSize());
 		logger.info("컨텐트 타입: " + file.getContentType());
 
-		String saveName = file.getOriginalFilename();
+		String saveName = file.getOriginalFilename(); // 파일의 원본 이름
+
+		saveName = uploadFile(saveName, file.getBytes());	// uuid_원본이름 저장
 
 		File target = new File(uploadPath, saveName);
 
@@ -50,6 +53,22 @@ public class UploadController {
 		mav.addObject("saveName", saveName);
 
 		return mav; // uploadResult.jsp(결과화면)로 포워딩
+	}
+
+	// 파일명 랜덤생성 메서드
+	private String uploadFile(String originalName, byte[] fileData) throws Exception {
+		// uuid 생성 (Universal Unique Identifier, 범용 고유 식별자)
+		UUID uuid = UUID.randomUUID();
+
+		// 랜덤 생성 + 파일 이름 저장
+		String saveName = uuid.toString() + "_" + originalName;
+//		File target = new File(uploadPath, saveName);
+
+		// 임시디렉토리에 저장된 업로드된 파일을 지정된 디렉토리로 복사
+		// FileCopyUtils.copy(바이트배열, 파일객체)
+//		FileCopyUtils.copy(fileData, target);
+
+		return saveName;
 	}
 
 }
