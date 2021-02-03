@@ -1,4 +1,4 @@
-package com.hoseong.spring;
+package com.hoseong.spring.controller.board;
 
 import java.text.DateFormat;
 import java.util.Date;
