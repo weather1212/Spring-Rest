@@ -12,10 +12,10 @@
 		// ===============================게시글 관련 ====================================
 		// 게시글 삭제
 		$("#btnDelete").click(function() {
-			var replyCount = ${map.replyCount };
+			var replyCount = ${map.replyCount};
 			console.log(replyCount);
 			// 댓글의 개수가 0보다 크면 팝업, 함수 종료
-			if(replyCount > 0) {
+			if (replyCount > 0) {
 				alert("댓글이 있는 게시물은 삭제할 수 없습니다.")
 				return;
 			}
@@ -60,114 +60,115 @@
 				location.href = "${path}/board/list?curPage=${map.curPage}&searchOption=${map.serchOption}&keyword=${map.keyword}";
 			}
 		});
-		
+
 		// ==================댓글 관련 ===========================
 		// 댓글 목록
-// 		listReply("1");	// **forwarding 방식
-// 		listReply2();	// **json 리턴 방식
-		listReplyRest("1");	// **Rest 방식
-		
+		// 		listReply("1");	// **forwarding 방식
+		// 		listReply2();	// **json 리턴 방식
+		listReplyRest("1"); // **Rest 방식
+
 		// **댓글 쓰기
 		$("#btnReply").click(function() {
 			//reply();		// 파라미터로 입력
-			replyJson();	// json으로 입력
+			replyJson(); // json으로 입력
 		});
 	});
-	
-	
+
 	// **댓글 쓰기========================================
 	// 파라미터 전달 방식 댓글쓰기
 	function reply() {
-		var replytext=$("#replytext").val();
+		var replytext = $("#replytext").val();
 		var bno = "${dto.bno}"
 		// **비밀댓글 체크 여부
 		var secretReply = 'n';
 		// 태그.is(":속성") 태그에 해당 속성이 있는지 boolean반환
-		if($("#secretReply").is(":checked")) {	//체크 여부
+		if ($("#secretReply").is(":checked")) { //체크 여부
 			secretReply = 'y';
 		}
 		//alert(secretReply);
 		// **비밀댓글 파라미터 추가
-		var param = "replytext=" + replytext + "&bno=" + bno + "&secretReply=" + secretReply;	//ajax를 통해 보낼 데이터
+		var param = "replytext=" + replytext + "&bno=" + bno + "&secretReply="
+				+ secretReply; //ajax를 통해 보낼 데이터
 		$.ajax({
-			type: "post",
-			url: "${path}/reply/write",
-			data: param,
-			success: function() {
+			type : "post",
+			url : "${path}/reply/write",
+			data : param,
+			success : function() {
 				alert("댓글이 등록되었습니다.")
 				// **추가된 댓글 목록 ajax요청
-				listReply("1");		// forward(@Controller)
-// 				listReply2();	// json 리턴(@ReseteController)
+				listReply("1"); // forward(@Controller)
+				// 				listReply2();	// json 리턴(@ReseteController)
 			},
-			error: function() {
+			error : function() {
 				console.log("데이터 전송에 실패했습니다.");
 			}
-			
+
 		});
 	}
 	// **json 방식 댓글 쓰기
 	function replyJson() {
-		var replytext=$("#replytext").val();
+		var replytext = $("#replytext").val();
 		var bno = "${dto.bno}"
 		// **비밀댓글 체크 여부
 		var secretReply = 'n';
 		// 태그.is(":속성") 태그에 해당 속성이 있는지 boolean반환
-		if($("#secretReply").is(":checked")) {	//체크 여부
+		if ($("#secretReply").is(":checked")) { //체크 여부
 			secretReply = 'y';
 		}
 		//alert(secretReply);
 		$.ajax({
-			type: "post",
-			url: "${path}/reply/writeRest",
-			contentType: "application/json",
-			dataType: "text",
-			data: JSON.stringify({
-				bno: bno,
-				replytext: replytext,
-				secretReply: secretReply
+			type : "post",
+			url : "${path}/reply/writeRest",
+			contentType : "application/json",
+			dataType : "text",
+			data : JSON.stringify({
+				bno : bno,
+				replytext : replytext,
+				secretReply : secretReply
 			}),
-			success: function(msg) {
+			success : function(msg) {
 				alert("댓글이 등록되었습니다.")
 				console.log("ajax success: " + msg);
 				// **추가된 댓글 목록 ajax요청
-// 				listReply("1");		// forward(@Controller)
-// 				listReply2();		// json 리턴(@ReseteController)
-				listReplyRest("1");	// Rest 방식
+				// 				listReply("1");		// forward(@Controller)
+				// 				listReply2();		// json 리턴(@ReseteController)
+				listReplyRest("1"); // Rest 방식
 			},
-			error: function(request, status, error) {	//status-상태, error-에러 내용
-				console.log("데이터 전송에 실패했습니다. : " + "status : " + request.status + ", error : " + error);
+			error : function(request, status, error) { //status-상태, error-에러 내용
+				console.log("데이터 전송에 실패했습니다. : " + "status : " + request.status
+						+ ", error : " + error);
 			}
-			
+
 		});
 	}
-	
+
 	// **댓글목록========================================
 	// @Controller 방식(파라미터 전달)
 	function listReply(num) {
 		console.log(num);
 		$.ajax({
-			type: "get",
-			url: "${path}/reply/list?bno=${dto.bno}&curPage=" + num,
-			success: function(result) {
+			type : "get",
+			url : "${path}/reply/list?bno=${dto.bno}&curPage=" + num,
+			success : function(result) {
 				// responseText가 result에 저장됨
 				$("#listReply").html(result);
 			},
-			error: function() {
+			error : function() {
 				console.log("댓글 목록을 불러오지 못했습니다.");
 			}
-			
+
 		});
 	}
 	// @RestController 방식 (json)
 	function listReply2() {
 		$.ajax({
-			type: "get",
+			type : "get",
 			// contentType: "application/json", ==> RestController이기 때문에 생략가능
-			url: "${path}/reply/listJson?bno=${dto.bno}",
-			success: function(result) {
+			url : "${path}/reply/listJson?bno=${dto.bno}",
+			success : function(result) {
 				console.log(result);
 				var printout = "(RestController 방식)<table>";
-				for(var i in result){
+				for ( var i in result) {
 					printout += "<tr>";
 					printout += "<td><br>" + result[i].userName;
 					printout += "(" + changeDate(result[i].regdate) + ")<br>";
@@ -177,11 +178,11 @@
 				printout += "</table>";
 				$("#listReply").html(printout);
 			},
-			error: function() {
+			error : function() {
 				console.log("댓글 목록을 불러오지 못했습니다.");
 			}
 		});
-		
+
 	}
 	// **날짜 변환 함수 작성
 	function changeDate(date) {
@@ -192,32 +193,34 @@
 		hour = date.getHours();
 		minute = date.getMinutes();
 		second = date.getSeconds();
-		strDate = year + "-" + month + "-" + day + "-" + hour + ":" + minute + ":" +second;
-		
+		strDate = year + "-" + month + "-" + day + "-" + hour + ":" + minute
+				+ ":" + second;
+
 		return strDate;
 	}
-	
+
 	// **댓글 목록 - Rest 방식 ====================================
 	function listReplyRest(num) {
 		$.ajax({
-			type: "get",
-			url: "${path}/reply/list/${dto.bno}/" + num,
-			success: function(result) {
-// 				console.log("댓글 목록 ajax 성공 : " + result);
+			type : "get",
+			url : "${path}/reply/list/${dto.bno}/" + num,
+			success : function(result) {
+				// 				console.log("댓글 목록 ajax 성공 : " + result);
 				//responseText가 result에 저장됨
 				$("#listReply").html(result);
 			},
-			error: function(request, status, error) {	//status-상태, error-에러 내용
-				console.log("댓글 목록 불러오기에 실패했습니다. : " + "status : " + request.status + ", error : " + error);
+			error : function(request, status, error) { //status-상태, error-에러 내용
+				console.log("댓글 목록 불러오기에 실패했습니다. : " + "status : "
+						+ request.status + ", error : " + error);
 			}
 		});
 	}
 	// **댓글 수정 화면 생성 함수
 	function showReplyModify(rno) {
 		$.ajax({
-			type: "get",
-			url: "${path}/reply/detail/" + rno,
-			success: function(result) {
+			type : "get",
+			url : "${path}/reply/detail/" + rno,
+			success : function(result) {
 				$("#modifyReply").html(result);
 				// 태그.css("속성", "값")
 				$("#modifyReply").css("visibility", "visible");
@@ -234,62 +237,73 @@
 	z-index: 10px;
 	visibility: hidden;
 }
-
 </style>
 </head>
 <body>
 	<%@ include file="../include/menu.jsp"%>
 	<h2>BOARD</h2>
-	<form name="form1" method="post">
-		<div>
-			<!-- 원하는 날짜형식으로 출력하기 위해 fmt태그 사용 -->
-			작성일자 :
-			<fmt:formatDate value="${dto.regdate}" pattern="yyyy-MM-dd a HH:mm:ss" />
-			<!-- 날짜 형식 => yyyy 4자리연도, MM 월, dd 일, a 오전/오후, HH 24시간제, hh 12시간제, mm 분, ss 초 -->
-		</div>
-		<div>조회수 : ${dto.viewcnt}</div>
-		<div>
-			작성자(이름)
-			<%--  <input name="writer" id="writer" value="${dto.writer}"
+	<c:choose>
+		<c:when test="${dto.show == 'y' }">
+		<!-- show가 y일 때  (게시글 삭제상태x)-->
+			<!-- 게시물 상세보기 영역 -->
+			<form name="form1" method="post">
+				<div>
+					<!-- 원하는 날짜형식으로 출력하기 위해 fmt태그 사용 -->
+					작성일자 :
+					<fmt:formatDate value="${dto.regdate}" pattern="yyyy-MM-dd a HH:mm:ss" />
+					<!-- 날짜 형식 => yyyy 4자리연도, MM 월, dd 일, a 오전/오후, HH 24시간제, hh 12시간제, mm 분, ss 초 -->
+				</div>
+				<div>조회수 : ${dto.viewcnt}</div>
+				<div>
+					작성자(이름)
+					<%--  <input name="writer" id="writer" value="${dto.writer}"
 				placeholder="이름을 입력해주세요"> --%>
-			${dto.userName }
-		</div>
-		<hr>
-		<div>
-			제목
-			<input name="title" id="title" size="80" value="${dto.title}" placeholder="제목을 입력해주세요">
-		</div>
-		<br>
-		<div>
-			<textarea name="content" id="content" rows="20" cols="88" placeholder="내용을 입력해주세요">${dto.content}</textarea>
-		</div>
-		<div style="width: 650px; text-align: center;">
-			<!-- 게시물번호를 hidden으로 처리 -->
-			<input type="hidden" name="bno" value="${dto.bno}">
-			<input type="hidden" name="writer" value="${dto.writer}">
-			<c:if test="${sessionScope.userId == dto.writer }">
-				<button type="button" id="btnUpdete">수정</button>
-				<button type="button" id="btnDelete">삭제</button>
-			</c:if>
-			<button type="button" id="btnList">목록으로</button>
-		</div>
-	</form>
-	
-	<!-- 댓글 섹션 -->
-	<div style="width:650px;">
-		<br>
-		<!-- **로그인한 화원에게만 댓글 작성 폼이 보이게 처리 -->
-		<c:if test="${sessionScope.userId != null }">
-			<hr>
-			<textarea rows="5" cols="50" id="replytext" placeholder="comment here!"></textarea>
-			<br>
-			<!-- **비밀댓글 체크 박스 -->
-			<input type="checkbox" id="secretReply">비밀 댓글
-			<button type="button" id="btnReply">댓글 달기</button>
-			<hr>
-		</c:if>
-	</div>
+					${dto.userName }
+				</div>
+				<hr>
+				<div>
+					제목
+					<input name="title" id="title" size="80" value="${dto.title}"
+						placeholder="제목을 입력해주세요"
+					>
+				</div>
+				<br>
+				<div>
+					<textarea name="content" id="content" rows="20" cols="88" placeholder="내용을 입력해주세요">${dto.content}</textarea>
+				</div>
+				<div style="width: 650px; text-align: center;">
+					<!-- 게시물번호를 hidden으로 처리 -->
+					<input type="hidden" name="bno" value="${dto.bno}">
+					<input type="hidden" name="writer" value="${dto.writer}">
+					<c:if test="${sessionScope.userId == dto.writer }">
+						<button type="button" id="btnUpdete">수정</button>
+						<button type="button" id="btnDelete">삭제</button>
+					</c:if>
+					<button type="button" id="btnList">목록으로</button>
+				</div>
+			</form>
+
+			<!-- 댓글 섹션 -->
+			<div style="width: 650px;">
+				<br>
+				<!-- **로그인한 화원에게만 댓글 작성 폼이 보이게 처리 -->
+				<c:if test="${sessionScope.userId != null }">
+					<hr>
+					<textarea rows="5" cols="50" id="replytext" placeholder="comment here!"></textarea>
+					<br>
+					<!-- **비밀댓글 체크 박스 -->
+					<input type="checkbox" id="secretReply">비밀 댓글
+					<button type="button" id="btnReply">댓글 달기</button>
+					<hr>
+				</c:if>
+			</div>
+		</c:when>
+		<c:otherwise>
+			<!--show가 n일 때(게시글 삭제상태) -->
+			삭제된 게시글입니다.
+		</c:otherwise>
+	</c:choose>
 	<!-- 댓글 목록을 출력할 위치 -->
-	<div id="listReply"></div> 
+	<div id="listReply"></div>
 </body>
 </html>

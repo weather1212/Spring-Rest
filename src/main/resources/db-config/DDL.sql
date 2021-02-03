@@ -13,6 +13,9 @@ create sequence board_seq
 start with 1
 increment by 1;
 
+-- board show 컬럼 추가(삭제시 숨김)
+ALTER TABLE board add show VARCHAR2(10) DEFAULT 'y' NOT NULL;
+
 
 -- member 테이블 생성
 create table member (

@@ -14,6 +14,8 @@ public class BoardVO {
 	private String userName; // 게시글 회원 이름 = 게시글 작성자
 	private int recnt; // 해당 게시글의 댓글 수
 
+	private String show; // *게시글 삭제 상태 유무(y,n)
+
 	public int getBno() {
 		return bno;
 	}
@@ -76,6 +78,14 @@ public class BoardVO {
 
 	public void setRecnt(int recnt) {
 		this.recnt = recnt;
+	}
+
+	public String getShow() {
+		return show;
+	}
+
+	public void setShow(String show) {
+		this.show = show;
 	}
 
 }

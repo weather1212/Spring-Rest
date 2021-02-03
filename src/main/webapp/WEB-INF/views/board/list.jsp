@@ -41,7 +41,8 @@
 			<button type="button" id="btnWrite">글쓰기</button>
 		</c:if>
 	</form>
-	<hr><br>
+	<hr>
+	<br>
 	<!-- 레코드의 갯수를 출력 -->
 	${map.count}개의 게시물이 있습니다.
 	<br>
@@ -55,25 +56,49 @@
 			<th>조회수</th>
 		</tr>
 		<c:forEach var="row" items="${map.list}">
-			<tr>
-				<td>${row.bno}</td>
-				<!-- 게시글 상세보기 페이지로 이동시 게시글 목록페이지에 있는 검색조건, 키워드, 현재페이지 값을 유지하기 위해 파라미터로 같이 넘겨줌-->
-				<td style="text-align: left;">
-					<a
-						href="${path}/board/view?bno=${row.bno}&curPage=${map.boardPagination.curPage}&searchOption=${map.searchOption}&keyword=${map.keyword}"
-					>${row.title} <!--  **댓글이 있으면 게시글 이름 옆에 댓글 개수 출력 --> <c:if test="${row.recnt > 0 }">
-							<span style="color: green;">(${row.recnt })</span>
-						</c:if>
-					</a>
-				</td>
-				<td>${row.userName}</td>
-				<td>
-					<!-- 원하는 날짜형식으로 출력하기 위해 fmt태그 사용 -->
-					<fmt:formatDate value="${row.regdate}" pattern="yyyy-MM-dd HH:mm:ss" />
-				</td>
-				<td>${row.viewcnt}</td>
-			</tr>
+			<c:choose>
+				<c:when test="${row.show == 'y' }">
+				<!-- show 컬럼이 y일때(삭제상태 x) -->
+					<tr>
+						<td>${row.bno}</td>
+						<!-- 게시글 상세보기 페이지로 이동시 게시글 목록페이지에 있는 검색조건, 키워드, 현재페이지 값을 유지하기 위해 파라미터로 같이 넘겨줌-->
+						<td style="text-align: left;">
+							<a
+								href="${path}/board/view?bno=${row.bno}&curPage=${map.boardPagination.curPage}&searchOption=${map.searchOption}&keyword=${map.keyword}"
+							>${row.title} <!--  **댓글이 있으면 게시글 이름 옆에 댓글 개수 출력 --> <c:if
+									test="${row.recnt > 0 }"
+								>
+									<span style="color: green;">(${row.recnt })</span>
+								</c:if>
+							</a>
+						</td>
+						<td>${row.userName}</td>
+						<td>
+							<!-- 원하는 날짜형식으로 출력하기 위해 fmt태그 사용 -->
+							<fmt:formatDate value="${row.regdate}" pattern="yyyy-MM-dd HH:mm:ss" />
+						</td>
+						<td>${row.viewcnt}</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+				<!-- show 컬럼이 n일때(삭제상태) -->
+					<tr>
+						<td colspan="5" align="left">
+							<c:if test="${row.recnt > 0 }">
+								<a
+									href="${path}/board/view.do?bno=${row.bno}&curPage=${map.boardPagination.curPage}&searchOption=${map.searchOption}&keyword=${map.keyword}"
+								>삭제된 게시물입니다. <!-- 댓글이 있으면 게시글 이름 옆에 출력 --> <span style="color: red;">(${row.recnt })</span>
+								</a>
+							</c:if>
+							<c:if test="${row.recnt == 0 }">
+							삭제된 게시물입니다.
+							</c:if>
+						</td>
+					</tr>
+				</c:otherwise>
+			</c:choose>
 		</c:forEach>
+
 		<!-- 페이징 처리 -->
 		<tr>
 			<td colspan="5">
@@ -109,6 +134,8 @@
 				<c:if test="${map.boardPagination.curPage < map.boardPagination.totPage }">
 					<a href="javascript:list('${map.boardPagination.totPage }')">[&#62;&#62;]</a>
 				</c:if>
+			</td>
+		</tr>
 	</table>
 </body>
 </html>
