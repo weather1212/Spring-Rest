@@ -8,12 +8,17 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.hoseong.spring.util.UploadFileUtils;
 
 @Controller
 public class UploadController {
@@ -27,6 +32,9 @@ public class UploadController {
 	String uploadPath;
 
 	// 업로드 흐름 : 업로드 버튼 클릭 => 임시 디렉토리에 업로드 => 지정된 디렉토리에 저장 => 파일 정보가 file에 저장
+	
+	/****************************** # 일반적인 방식의 업로드 처리  *********************************/
+	
 	@RequestMapping(value = "/upload/uploadForm", method = RequestMethod.GET)
 	public void uploadForm() {
 		// upload/uploadForm.jsp (업로드 페이지)로 포워딩
@@ -62,13 +70,29 @@ public class UploadController {
 
 		// 랜덤 생성 + 파일 이름 저장
 		String saveName = uuid.toString() + "_" + originalName;
-//		File target = new File(uploadPath, saveName);
-
-		// 임시디렉토리에 저장된 업로드된 파일을 지정된 디렉토리로 복사
-		// FileCopyUtils.copy(바이트배열, 파일객체)
-//		FileCopyUtils.copy(fileData, target);
 
 		return saveName;
+	}
+	
+	
+	/****************************** # 일반적인 방식의 업로드 처리  *********************************/
+	
+	/****************************** # ajax 방식의 업로드 처리  *********************************/
+	
+	@RequestMapping(value = "/upload/uploadAjax", method = RequestMethod.GET)
+	public void uploadAjax() {
+		// uploadAjax.jsp로 포워딩
+	}
+	
+	// produces = "text/plain; charset=utf-8" : 파일 한글 처리
+	@ResponseBody
+	@RequestMapping(value = "/upload/uploadAjax", method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
+	public ResponseEntity<String> uploadAjax(MultipartFile file) throws Exception {
+		logger.info("파일이름 : " + file.getOriginalFilename());
+		logger.info("파일크기 : " + file.getSize());
+		logger.info("컨텐트 타입: " + file.getContentType());
+		
+		return new ResponseEntity<String>(UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes()), HttpStatus.OK);
 	}
 
 }
