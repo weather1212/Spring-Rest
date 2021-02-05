@@ -42,17 +42,19 @@ small {
 			var formData = new FormData();
 			// 폼 객체 파일추가, append("변수명", 값)
 			formData.append("file", file);
-			
+
 			// file을 전달할 때는 ajax옵션 속성을  type:post, processDdata: false, contentType:false로 설정한다.
 			$.ajax({
-				type: "post",
-				url: "${path}/upload/uploadAjax";
-				data: formData,
+				type : "post",
+				url : "${path}/upload/uploadAjax",
+				data : formData,
+				dataType : "text",
 				// processDdata: true => get 방식, false => post 방식
-				dataType: "text",
+				processData : false,
 				// contentType: true => application/x-www-form-urlencoded,
 				//				false => multipart/form-data
-				success: function(data) {
+				contentType : false,
+				success : function(data) {
 					alert(data);
 				}
 			});

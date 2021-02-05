@@ -49,7 +49,7 @@ public class UploadFileUtils {
 		return uploadedFileName;
 	}
 
-	// 날짜변 디렉토리 추출
+	// 날짜별 디렉토리 추출
 	private static String calcPath(String uploadPath) {
 		Calendar cal = Calendar.getInstance();
 
@@ -99,7 +99,7 @@ public class UploadFileUtils {
 		BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, 100);
 
 		// 썸네일의 이름을 생성(원본파일명에 's_'를 붙임)
-		String thumbnailName = uploadPath = path + File.separator + "s_" + fileName;
+		String thumbnailName = uploadPath + path + File.separator + "s_" + fileName;
 		File newFile = new File(thumbnailName);
 		String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
 
