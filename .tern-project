@@ -9,6 +9,12 @@
     },
     "ckeditor4.4.x": {
       
+    },
+    "browser-extension": {
+      
+    },
+    "jquery-extension": {
+      
     }
   },
   "libs": [
