@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hoseong.spring.dao.board.BoardDAO;
 import com.hoseong.spring.vo.board.BoardVO;
@@ -17,6 +18,7 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDAO boardDAO;
 
 	// 게시글 작성
+	@Transactional	// 트랜잭션 처리 메서드로 설정
 	@Override
 	public void writeBoard(BoardVO boardVO) throws Exception {
 

@@ -75,4 +75,10 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.update("boardMapper.increaseViewcnt", bno);
 	}
 
+	// 파일 업로드
+	@Override
+	public void addAttach(String fullName) {
+		sqlSession.insert("boardMapper.addAttach", fullName);
+	}
+
 }

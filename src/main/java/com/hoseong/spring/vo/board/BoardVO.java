@@ -15,6 +15,8 @@ public class BoardVO {
 	private int recnt; // 해당 게시글의 댓글 수
 
 	private String show; // *게시글 삭제 상태 유무(y,n)
+	
+	private String[] files;	// 게시글의 첨부파일 이름
 
 	public int getBno() {
 		return bno;
@@ -86,6 +88,14 @@ public class BoardVO {
 
 	public void setShow(String show) {
 		this.show = show;
+	}
+
+	public String[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(String[] files) {
+		this.files = files;
 	}
 
 }

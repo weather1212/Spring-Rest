@@ -28,5 +28,8 @@ public interface BoardDAO {
 
 	// 게시글 조회수
 	public void increaseViewcnt(int bno) throws Exception;
+	
+	// 파일업로드
+	public void addAttach(String fullName);
 
 }
