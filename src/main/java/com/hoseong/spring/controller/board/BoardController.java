@@ -8,10 +8,13 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hoseong.spring.service.board.BoardPagination;
@@ -120,8 +123,8 @@ public class BoardController {
 
 	// 게시글 수정
 	// form에서 입력한 내용들은 @ModelAttribute BoardVO vo로 전달됨
-	@RequestMapping(value = "updateAction", method = RequestMethod.POST)
-	public String updateAction(@ModelAttribute BoardVO vo) throws Exception {
+	@RequestMapping(value = "update", method = RequestMethod.POST)
+	public String update(@ModelAttribute BoardVO vo) throws Exception {
 
 		boardService.updateBoard(vo);
 
@@ -134,6 +137,16 @@ public class BoardController {
 		boardService.deleteBoard(bno);
 
 		return "redirect:list";
+	}
+	
+	// 게시글 첨부파일 목록 매핑
+	// http://loacalhost/spring/board/getAttach/1
+	// @PathVariable : parameter가 아닌 url에 포함된 변수
+	// @RequestParam : parameter변수
+	@RequestMapping(value = "/getAttach/{bno}", method = RequestMethod.POST)
+	@ResponseBody	// view를 리턴하지않고 data를 리턴
+	public List<String> getAttach(@PathVariable("bno") int bno) {
+		return boardService.getAttach(bno);
 	}
 
 }

@@ -25,34 +25,40 @@
 				document.form1.submit();
 			}
 		});
-
-		// 게시글 수정
-		$("#btnUpdete").click(function() {
+		
+		// 4. 게시글 수정버튼 클릭 이벤트 처리
+		$("#btnUpdate").click(function() {
 			//var title = document.form1.title.value; ==> name속성으로 처리할 경우
 			//var content = document.form1.content.value;
 			//var writer = document.form1.writer.value;
 			var title = $("#title").val();
 			var content = $("#content").val();
-			var writer = $("#writer").val();
-			if (title == "") {
-				alert("제목을 입력하세요");
+			if(title == "") {
+				alert("제목을 입력하세요.");
 				document.form1.title.focus();
 				return;
 			}
-			if (content == "") {
-				alert("내용을 입력하세요");
+			if(content == "") {
+				alert("내용을 입력하세요.");
 				document.form1.content.focus();
 				return;
 			}
-			/* if (writer == "") {
-				alert("이름을 입력하세요");
-				document.form1.writer.focus();
-				return;
-			} */
-			document.form1.action = "${path}/board/updateAction"
+			document.form1.acrion="${path}/board/update";
+			// 첨부파일 이름을 form에 추가
+			var that = $("#form1");
+			var str = "";
+			// 태그들.each(함수)
+			// id가 uploadedList인 태그 내부에 있는 hidden태그들
+			$("#uploadedList .file").each(function(i) {
+				str += "<input type='hidden' name='files[" + i + "]' value='" + $(this).val() + "'>";
+			});
+			// form에 hidden태그들을 추가
+			$("#form1").append(str);
 			// 폼에 입력한 데이터를 서버로 전송
 			document.form1.submit();
 		});
+		
+		
 		// 게시를 목록으로 이동
 		$("#btnList").click(function() {
 			console.log("curPage=${map.curPage}&searchOption=${map.serchOption}&keyword=${map.keyword}");
@@ -60,6 +66,84 @@
 				location.href = "${path}/board/list?curPage=${map.curPage}&searchOption=${map.serchOption}&keyword=${map.keyword}";
 			}
 		});
+		
+		//===========================파일 업로드==============================
+		
+		// 1. 첨부파일 목록 불러오기 함수 호출
+		listAttach();
+
+		// 2. 첨부파일 추가 ajax 요청
+		// 파일 업로드 영역에 텍스트 파일 또는 이미지파일을 드래그했을 때 내용이 바로 보여지는 기본 효과 막음
+		// dragenter : 마우스가 대상 객체의 위로 처음 진입할 때 발생
+		// dragover : 드래그하면서 마우스가 대상 객체의 위에 자리 잡고 있을 때 발생
+		$("#fileDrop").on("dragenter dragover", function(event) {
+			event.preventDefault(); // 기본 효과를 막음
+		});
+
+		// event: jQuery의 이벤트
+		// originalEvent: javascript의 이벤트
+		$("#fileDrop").on("drop", function(event) {
+			event.preventDefault(); // 기본 효과를 막음
+			// 드래그된 파일의 정보
+			var files = event.originalEvent.dataTransfer.files;
+			// 첫번째 파일
+			var file = files[0];
+			// 콘솔에서 파일정보 확인
+			console.log(file);
+
+			// ajax로 전달할 폼 객체
+			var formData = new FormData();
+			// 폼 객체 파일추가, append("변수명", 값)
+			formData.append("file", file);
+
+			// file을 전달할 때는 ajax옵션 속성을  type:post, processDdata: false, contentType:false로 설정한다.
+			$.ajax({
+				type : "post",
+				url : "${path}/upload/uploadAjax",
+				data : formData,
+				dataType : "text",
+				// processDdata: true => get 방식, false => post 방식
+				processData : false,
+				// contentType: true => application/x-www-form-urlencoded,
+				//				false => multipart/form-data
+				contentType : false,
+				success : function(data) {
+					console.log(data);
+					// 첨부 파일의 정보
+					var fileInfo = getFileInfo(data);
+					// 하이퍼링크
+					var html = "<a href='"+fileInfo.getLink+"'>"+fileInfo.fileName+"</a><br>";
+					// hidden 태그 추가
+					html += "<input type='hidden' class='file' value='"+fileInfo.fullName+"'>";
+					// div에 추가
+					$("#uploadedList").append(html);
+				},
+				error : function(request, status, error) { //status-상태, error-에러 내용
+					console.log("데이터 전송에 실패했습니다. : " + "status : "
+							+ request.status + ", error : " + error);
+				}
+			});
+
+		});
+		
+		// 3. 첨부파일 삭제 ajax 요청
+		// 태그.on("이벤트", "자손태그", 이벤트 핸들러)
+		$("#uploadedList").on("click", ".fileDel", function(event) {
+			var that = $(this);	//클릭한 a태그
+			$.ajax({
+				type: "post",
+				url: "${path}/upload/deleteFile",
+				// data: "fileName=" + $(this).attr("data-src") = {fileName:$(this).attr("data-src")}
+				data: {fileName: $(this).attr("data-src")},
+				dataType: "text",
+				success: function(result) {
+					if(result == "deleted") {
+						that.parent("div").remove();
+					}
+				}
+			});
+		});
+		
 
 		// ==================댓글 관련 ===========================
 		// 댓글 목록
@@ -227,6 +311,32 @@
 			}
 		});
 	}
+	
+	//================첨부파일 관련=================================
+	// 첨부파일 목록 ajax요청 처리
+	// $(객체) $("태그") $("#id") $(".class")
+	function listAttach() {
+		$.ajax({
+			type: "post",
+			url: "${path}/board/getAttach/${dto.bno}",
+			success: function(list) {
+				console.log(list);
+				$(list).each(function() {
+					// each문 내부의 this : 각 step에 해당되는 값을 의미
+					var fileInfo = getFileInfo(this);
+					// a태그안에는 파일의 링크를 걸어주고, 목록에는 파일의 이름을 출력
+					var html = "<div><a href='" + fileInfo.getLink + "'>" + fileInfo.fileName + "</a>&nbsp;&nbsp;";
+					// 삭제 버튼
+					html += "<a href = '#' class='fileDel' data-src='" + this + "'>[삭제]</a></div>";
+					$("#uploadedList").append(html);
+				});
+			},
+			error : function(request, status, error) { //status-상태, error-에러 내용
+				console.log("첨부파일 목록 불러오기에 실패했습니다. : " + "status : "
+						+ request.status + ", error : " + error);
+			}
+		});
+	}
 </script>
 <style type="text/css">
 #modifyReply {
@@ -236,6 +346,12 @@
 	padding: 10px;
 	z-index: 10px;
 	visibility: hidden;
+}
+#fileDrop {
+	width: 60px;
+	height: 80px;
+	border: 1px solid gray;
+	background-color: gray;
 }
 </style>
 </head>
@@ -270,6 +386,15 @@
 				<br>
 				<div>
 					<textarea name="content" id="content" rows="20" cols="88" placeholder="내용을 입력해주세요">${dto.content}</textarea>
+				</div>
+				<!-- 첨부파일 목록 -->
+				<div>
+					첨부파일
+					<div id="uploadedList"></div>
+				</div>
+				<!-- 첨부파일을 드래그할 영역 -->
+				<div>
+					<div id="fileDrop"></div>
 				</div>
 				<div style="width: 650px; text-align: center;">
 					<!-- 게시물번호를 hidden으로 처리 -->

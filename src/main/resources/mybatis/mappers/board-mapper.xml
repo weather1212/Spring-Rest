@@ -67,7 +67,7 @@
 	<!-- 02. 게시글 작성 -->
 	<insert id="write">
 		INSERT INTO board (bno, title, content, writer, show)
-		VALUES (seq_board.NEXTVAL, #{title}, #{content}, #{writer}, 'y')
+		VALUES (board_seq.NEXTVAL, #{title}, #{content}, #{writer}, 'y')
 	</insert>
 
 	<!--03. 게시글 상세보기 조회 -->
@@ -104,15 +104,29 @@
 		UPDATE board SET show = 'n' WHERE bno = #{bno}
 	</update>
 	
-	<!-- 파일의 정보 입력 -->
+	<!-- ******************** 게시글 첨부파일 관련 ********************** -->
+	<!-- 01. 게시물의 첨부파일 목록 -->
+	<select id="getAttach" resultType="String">
+		SELECT fullname FROM attach WHERE bno = #{bno} ORDER BY regdate
+	</select>
+	
+	<!-- 02. 게시물 첨부파일 추가 -->
 	<insert id="addAttach">
-		INSERT INTO attach (fullName, bno)
-		VALUES (#{fullName), seq_board.CURRVAL)
+		<!-- CURRVAL : 현재의 값 -->
+		INSERT INTO attach (fullname, bno)
+		VALUES (#{fullName), board_seq.CURRVAL)
+	</insert>
+	
+	<!-- 03. 게시글의 첨부파일 업데이트처리(입력처리) -->
+	<insert id="updateAttach">
+		INSERT INTO attach (fullname, bno)
+		VALUES (#{fullName}, #{bno})
 	</insert>
 
-
-
-
+	<!-- 04. 게시글의 첨부파일 삭제처리 -->
+	<delete id="deleteAttach">
+		DELETE FROM attach WHERE fullname = #{fullName}
+	</delete>
 
 
 

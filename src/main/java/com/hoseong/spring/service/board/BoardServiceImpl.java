@@ -18,7 +18,7 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDAO boardDAO;
 
 	// 게시글 작성
-	@Transactional	// 트랜잭션 처리 메서드로 설정
+	@Transactional // 트랜잭션 처리 메서드로 설정
 	@Override
 	public void writeBoard(BoardVO boardVO) throws Exception {
 
@@ -52,9 +52,20 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	// 게시글 수정
+	@Transactional
 	@Override
 	public void updateBoard(BoardVO boardVO) throws Exception {
 		boardDAO.updateBoard(boardVO);
+
+		// 첨부파일 정보 등록
+		String[] files = boardVO.getFiles(); // 첨부파일 배열
+		// 첨부파일이 없으면 종료
+		if (files == null)
+			return;
+		// 첨부파일들의 정보를 attach 테이블에 insert
+		for(String name : files) {
+			boardDAO.updateAttach(name, boardVO.getBno());
+		}
 	}
 
 	// 게시글 삭제
@@ -96,6 +107,18 @@ public class BoardServiceImpl implements BoardService {
 
 		}
 
+	}
+
+	// 게시글의 첨부파일 목록
+	@Override
+	public List<String> getAttach(int bno) {
+		return boardDAO.getAttach(bno);
+	}
+
+	// 게시글의 첨부파일 삭제 처리
+	@Override
+	public void deleteFile(String fullName) {
+		boardDAO.deleteFile(fullName);
 	}
 
 }

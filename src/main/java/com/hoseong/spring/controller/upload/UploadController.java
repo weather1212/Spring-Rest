@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -23,11 +24,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hoseong.spring.service.board.BoardService;
 import com.hoseong.spring.util.MediaUtils;
 import com.hoseong.spring.util.UploadFileUtils;
 
 @Controller
 public class UploadController {
+	
+	@Inject
+	BoardService boardService;
 
 	private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
@@ -172,6 +177,9 @@ public class UploadController {
 		}
 		// 원본파일 삭제
 		new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+		
+		// 레코드 삭제
+		boardService.deleteFile(fileName);
 
 		// 데이터와 http 상태 코드 전송
 		return new ResponseEntity<String>("deleted", HttpStatus.OK);

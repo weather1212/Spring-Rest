@@ -7,6 +7,7 @@
 <title>게시글 작성</title>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sessionCheck.jsp"%>
+<script type="text/javascript" src="${path}/resources/js/common.js"></script>
 <script>
 	$(document).ready(function() {
 		$("#btnSave").click(function() {
@@ -41,6 +42,7 @@
 		});
 		
 		//===========================파일 업로드==============================
+		// 첨부파일 추가 ajax 요청
 		// 파일 업로드 영역에 텍스트 파일 또는 이미지파일을 드래그했을 때 내용이 바로 보여지는 기본 효과 막음
 		// dragenter : 마우스가 대상 객체의 위로 처음 진입할 때 발생
 		// dragover : 드래그하면서 마우스가 대상 객체의 위에 자리 잡고 있을 때 발생
@@ -89,6 +91,25 @@
 			});
 
 		});
+		
+		// 첨부파일 삭제 ajax 요청
+		// 태그.on("이벤트", "자손태그", 이벤트 핸들러)
+		$("#uploadedList").on("click", ".fileDel", function(event) {
+			var that = $(this);	//클릭한 a태그
+			$.ajax({
+				type: "post",
+				url: "${path}/upload/deleteFile",
+				// data: "fileName=" + $(this).attr("data-src") = {fileName:$(this).attr("data-src")}
+				data: {fileName: $(this).attr("data-src")},
+				dataType: "text",
+				success: function(result) {
+					if(result == "deleted") {
+						that.parent("div").remove();
+					}
+				}
+			});
+		});
+		
 	});
 </script>
 <style type="text/css">

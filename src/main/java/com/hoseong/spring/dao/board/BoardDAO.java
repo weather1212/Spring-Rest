@@ -2,8 +2,6 @@ package com.hoseong.spring.dao.board;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import com.hoseong.spring.vo.board.BoardVO;
 
 public interface BoardDAO {
@@ -31,5 +29,13 @@ public interface BoardDAO {
 	
 	// 파일업로드
 	public void addAttach(String fullName);
-
+	
+	// 게시글 첨부파일 목록
+	public List<String> getAttach(int bno);
+	
+	// 게시글 첨부파일 수정 처리
+	public void updateAttach(String fullName, int bno);
+	
+	// 게시글 첨부파일 삭제처리
+	public void deleteFile(String fullName);
 }

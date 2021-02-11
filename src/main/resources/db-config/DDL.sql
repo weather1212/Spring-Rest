@@ -53,7 +53,7 @@ increment by 1;
 CREATE TABLE attach (
 fullname VARCHAR2(150) CONSTRAINT attach_fullname_pk PRIMARY KEY,
 bno NUMBER NOT NULL,
-regedate DATE DEFAULT SYSDATE
+regdate DATE DEFAULT SYSDATE
 );
 
 -- attach bno 외래키 생성 (board(bno)참조)

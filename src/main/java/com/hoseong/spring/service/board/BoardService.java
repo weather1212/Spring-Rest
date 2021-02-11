@@ -28,4 +28,10 @@ public interface BoardService {
 
 	// 게시글 조회수
 	public void increaseViewcnt(int bno, HttpSession session) throws Exception;
+	
+	// 게시글의 첨부파일 목록
+	public List<String> getAttach(int bno);
+	
+	// 게시글의 첨부파일 삭제 처리
+	public void deleteFile(String fullName);
 }
