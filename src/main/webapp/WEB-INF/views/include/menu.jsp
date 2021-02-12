@@ -1,6 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- jstl 코어 태그 -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<style type="text/css">
+a:link {
+	color: rgb(140, 89, 185);
+	text-decoration: none;
+}
+
+a:visited {
+	color: rgb(140, 89, 185);
+	text-decoration: none;
+}
+
+a:hover {
+	color: black;
+	text-decoration: none;
+	box-shadow: 0 -6px rgba(75, 112, 253, 0.3) inset;
+}
+</style>
+
 <a href="${path}/board/list">BOARD</a> |
 <a href="${path}/upload/uploadForm">Upload</a> |
 <a href="${path}/upload/uploadAjax">Upload(AJAX)</a> |

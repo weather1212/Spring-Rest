@@ -143,8 +143,7 @@ public class UploadController {
 				// 바이트배열을 스트링으로 : new String(fileName.getBytes("utf-8"),"iso-8859-1")
 				// *iso-8859-1 서유럽언어, 큰 따옴표 내부에 "\" 내용 \" "
 				// 파일의 한글 깨짐 방지
-				headers.add("Content-Disposition",
-						"attachment; filename=\"" + new String(fileName.getBytes("utf-8"), "iso-8859-1") + "\"");
+				headers.add("Content-Disposition", "attachment; filename=\"" + new String(fileName.getBytes("utf-8"), "iso-8859-1") + "\"");
 				// headers.add("Content-Disposition", "attachment; filename='"+fileName+"'");
 			}
 			// 바이트배열, 헤더, HTTP상태코드

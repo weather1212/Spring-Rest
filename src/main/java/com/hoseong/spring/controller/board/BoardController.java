@@ -146,6 +146,7 @@ public class BoardController {
 	@RequestMapping(value = "/getAttach/{bno}", method = RequestMethod.POST)
 	@ResponseBody	// view를 리턴하지않고 data를 리턴
 	public List<String> getAttach(@PathVariable("bno") int bno) {
+		System.out.println(bno);
 		return boardService.getAttach(bno);
 	}
 

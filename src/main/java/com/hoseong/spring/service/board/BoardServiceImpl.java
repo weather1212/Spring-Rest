@@ -43,6 +43,15 @@ public class BoardServiceImpl implements BoardService {
 		boardVO.setWriter(writer);
 
 		boardDAO.writeBoard(boardVO);
+		
+		// 게시물의 첨부파일 정보 등록
+		String[] files = boardVO.getFiles();	// 첨부파일 배열
+		
+		if(files == null)
+			return;	// 첨부파일이 없으면 메서드 종료
+		for(String name : files) {
+			boardDAO.addAttach(name);
+		}
 	}
 
 	// 게시글 상세보기

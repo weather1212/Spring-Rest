@@ -18,6 +18,8 @@ public class BoardVO {
 	
 	private String[] files;	// 게시글의 첨부파일 이름
 
+	private int attachFl;	//게시글의 첨부파일 존재 여부
+
 	public int getBno() {
 		return bno;
 	}
@@ -96,6 +98,14 @@ public class BoardVO {
 
 	public void setFiles(String[] files) {
 		this.files = files;
+	}
+
+	public int getAttachFl() {
+		return attachFl;
+	}
+
+	public void setAttachFl(int attachFl) {
+		this.attachFl = attachFl;
 	}
 
 }

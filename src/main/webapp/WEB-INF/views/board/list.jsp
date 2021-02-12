@@ -65,10 +65,14 @@
 						<td style="text-align: left;">
 							<a
 								href="${path}/board/view?bno=${row.bno}&curPage=${map.boardPagination.curPage}&searchOption=${map.searchOption}&keyword=${map.keyword}"
-							>${row.title} <!--  **댓글이 있으면 게시글 이름 옆에 댓글 개수 출력 --> <c:if
-									test="${row.recnt > 0 }"
-								>
+							>${row.title}
+								<!--  **댓글이 있으면 게시글 이름 옆에 댓글 개수 출력 -->
+								<c:if test="${row.recnt > 0 }" >
 									<span style="color: green;">(${row.recnt })</span>
+								</c:if>
+								<!--  **첨부파일이 있으면 게시글 이름 옆에 첨부파일 아이콘 출력 -->
+								<c:if test="${row.attachFl > 0 }" >
+									<span>📁</span>
 								</c:if>
 							</a>
 						</td>

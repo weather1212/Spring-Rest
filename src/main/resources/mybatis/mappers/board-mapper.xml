@@ -13,9 +13,10 @@
 		SELECT bno, title, content, writer, regdate, viewcnt, user_name AS
 		userName, show,
 		<!-- **댓글 숫자 표시 -->
-		(SELECT COUNT(*) FROM reply WHERE bno=board.bno) AS recnt
-		FROM board,
-		member
+		(SELECT COUNT(*) FROM reply WHERE bno = board.bno) AS recnt,
+		<!-- **댓글 파일 첨부 표시 -->
+		(SELECT COUNT(*) FROM attach WHERE bno = board.bno) AS attachFl
+		FROM board, member
 		<!-- WHERE절을 include로 삽입 -->
 		<include refid="search" />
 		ORDER BY bno desc, regdate DESC
@@ -114,13 +115,13 @@
 	<insert id="addAttach">
 		<!-- CURRVAL : 현재의 값 -->
 		INSERT INTO attach (fullname, bno)
-		VALUES (#{fullName), board_seq.CURRVAL)
+		VALUES (#{fullName}, board_seq.CURRVAL)
 	</insert>
 	
 	<!-- 03. 게시글의 첨부파일 업데이트처리(입력처리) -->
 	<insert id="updateAttach">
 		INSERT INTO attach (fullname, bno)
-		VALUES (#{fullName}, #{bno})
+		VALUES (#{fullName}, board_seq.CURRVAL)
 	</insert>
 
 	<!-- 04. 게시글의 첨부파일 삭제처리 -->

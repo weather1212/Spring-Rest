@@ -6,13 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>게시글 작성</title>
 <%@ include file="../include/header.jsp"%>
+<script type="text/javascript" src="${path}/resources/js/common.js"></script>
 <script>
 	$(document).ready(function() {
 
 		// ===============================게시글 관련 ====================================
 		// 게시글 삭제
 		$("#btnDelete").click(function() {
-			var replyCount = ${map.replyCount};
+			var replyCount = ${map.replyCount };
 			console.log(replyCount);
 			// 댓글의 개수가 0보다 크면 팝업, 함수 종료
 			if (replyCount > 0) {
@@ -25,7 +26,7 @@
 				document.form1.submit();
 			}
 		});
-		
+
 		// 4. 게시글 수정버튼 클릭 이벤트 처리
 		$("#btnUpdate").click(function() {
 			//var title = document.form1.title.value; ==> name속성으로 처리할 경우
@@ -33,32 +34,31 @@
 			//var writer = document.form1.writer.value;
 			var title = $("#title").val();
 			var content = $("#content").val();
-			if(title == "") {
+			if (title == "") {
 				alert("제목을 입력하세요.");
 				document.form1.title.focus();
 				return;
 			}
-			if(content == "") {
+			if (content == "") {
 				alert("내용을 입력하세요.");
 				document.form1.content.focus();
 				return;
 			}
-			document.form1.acrion="${path}/board/update";
+			document.form1.acrion = "${path}/board/update";
 			// 첨부파일 이름을 form에 추가
 			var that = $("#form1");
 			var str = "";
 			// 태그들.each(함수)
 			// id가 uploadedList인 태그 내부에 있는 hidden태그들
 			$("#uploadedList .file").each(function(i) {
-				str += "<input type='hidden' name='files[" + i + "]' value='" + $(this).val() + "'>";
+				str += "<input type='hidden' name='files["+i+"]' value='"+$(this).val()+ "'>";
 			});
 			// form에 hidden태그들을 추가
 			$("#form1").append(str);
 			// 폼에 입력한 데이터를 서버로 전송
 			document.form1.submit();
 		});
-		
-		
+
 		// 게시를 목록으로 이동
 		$("#btnList").click(function() {
 			console.log("curPage=${map.curPage}&searchOption=${map.serchOption}&keyword=${map.keyword}");
@@ -66,9 +66,9 @@
 				location.href = "${path}/board/list?curPage=${map.curPage}&searchOption=${map.serchOption}&keyword=${map.keyword}";
 			}
 		});
-		
+
 		//===========================파일 업로드==============================
-		
+
 		// 1. 첨부파일 목록 불러오기 함수 호출
 		listAttach();
 
@@ -112,38 +112,36 @@
 					// 첨부 파일의 정보
 					var fileInfo = getFileInfo(data);
 					// 하이퍼링크
-					var html = "<a href='"+fileInfo.getLink+"'>"+fileInfo.fileName+"</a><br>";
+					var html = "<a href='"+fileInfo.getLink+"'>" + fileInfo.fileName + "</a><br>";
 					// hidden 태그 추가
 					html += "<input type='hidden' class='file' value='"+fileInfo.fullName+"'>";
 					// div에 추가
 					$("#uploadedList").append(html);
 				},
 				error : function(request, status, error) { //status-상태, error-에러 내용
-					console.log("데이터 전송에 실패했습니다. : " + "status : "
-							+ request.status + ", error : " + error);
+					console.log("데이터 전송에 실패했습니다. : "+ "status : " + request.status + ", error : " + error);
 				}
 			});
 
 		});
-		
+
 		// 3. 첨부파일 삭제 ajax 요청
 		// 태그.on("이벤트", "자손태그", 이벤트 핸들러)
 		$("#uploadedList").on("click", ".fileDel", function(event) {
-			var that = $(this);	//클릭한 a태그
+			var that = $(this); //클릭한 a태그
 			$.ajax({
-				type: "post",
-				url: "${path}/upload/deleteFile",
+				type : "post",
+				url : "${path}/upload/deleteFile",
 				// data: "fileName=" + $(this).attr("data-src") = {fileName:$(this).attr("data-src")}
-				data: {fileName: $(this).attr("data-src")},
-				dataType: "text",
-				success: function(result) {
-					if(result == "deleted") {
+				data : {fileName : $(this).attr("data-src")},
+				dataType : "text",
+				success : function(result) {
+					if (result == "deleted") {
 						that.parent("div").remove();
 					}
 				}
 			});
 		});
-		
 
 		// ==================댓글 관련 ===========================
 		// 댓글 목록
@@ -277,8 +275,7 @@
 		hour = date.getHours();
 		minute = date.getMinutes();
 		second = date.getSeconds();
-		strDate = year + "-" + month + "-" + day + "-" + hour + ":" + minute
-				+ ":" + second;
+		strDate = year + "-" + month + "-" + day + "-" + hour + ":" + minute + ":" + second;
 
 		return strDate;
 	}
@@ -311,29 +308,32 @@
 			}
 		});
 	}
-	
+
 	//================첨부파일 관련=================================
 	// 첨부파일 목록 ajax요청 처리
 	// $(객체) $("태그") $("#id") $(".class")
 	function listAttach() {
+		// 로그 출력
+		console.log("listAttach 실행");
 		$.ajax({
-			type: "post",
-			url: "${path}/board/getAttach/${dto.bno}",
-			success: function(list) {
+			type : "post",
+			url : "${path}/board/getAttach/${dto.bno}",
+			success : function(list) {
 				console.log(list);
 				$(list).each(function() {
 					// each문 내부의 this : 각 step에 해당되는 값을 의미
 					var fileInfo = getFileInfo(this);
 					// a태그안에는 파일의 링크를 걸어주고, 목록에는 파일의 이름을 출력
 					var html = "<div><a href='" + fileInfo.getLink + "'>" + fileInfo.fileName + "</a>&nbsp;&nbsp;";
-					// 삭제 버튼
-					html += "<a href = '#' class='fileDel' data-src='" + this + "'>[삭제]</a></div>";
+					// ***로그인한 회원이 작성자일 경우 삭제 버튼
+					if(${sessionScope.userId == dto.writer }) {
+						html += "<a href = '#' class='fileDel' data-src='" + this + "'>[삭제]</a></div>";
+					}
 					$("#uploadedList").append(html);
 				});
 			},
 			error : function(request, status, error) { //status-상태, error-에러 내용
-				console.log("첨부파일 목록 불러오기에 실패했습니다. : " + "status : "
-						+ request.status + ", error : " + error);
+				console.log("첨부파일 목록 불러오기에 실패했습니다. : " + "status : " + request.status + ", error : " + error);
 			}
 		});
 	}
@@ -347,11 +347,12 @@
 	z-index: 10px;
 	visibility: hidden;
 }
+
 #fileDrop {
-	width: 60px;
-	height: 80px;
-	border: 1px solid gray;
-	background-color: gray;
+	width: 600px;
+	height: 70px;
+	border: 1px dotted gray;
+	background-color: #90909050;
 }
 </style>
 </head>
@@ -360,9 +361,9 @@
 	<h2>BOARD</h2>
 	<c:choose>
 		<c:when test="${dto.show == 'y' }">
-		<!-- show가 y일 때  (게시글 삭제상태x)-->
+			<!-- show가 y일 때  (게시글 삭제상태x)-->
 			<!-- 게시물 상세보기 영역 -->
-			<form name="form1" method="post">
+			<form name="form1" id="form1" method="post">
 				<div>
 					<!-- 원하는 날짜형식으로 출력하기 위해 fmt태그 사용 -->
 					작성일자 :
@@ -396,6 +397,7 @@
 				<div>
 					<div id="fileDrop"></div>
 				</div>
+				<br>
 				<div style="width: 650px; text-align: center;">
 					<!-- 게시물번호를 hidden으로 처리 -->
 					<input type="hidden" name="bno" value="${dto.bno}">

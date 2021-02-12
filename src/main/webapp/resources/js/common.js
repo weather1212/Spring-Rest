@@ -13,7 +13,7 @@ function getFileInfo(fullName) {
 	// 이미지파일일 경우
 	if (checkImageType(fullName)) {
 		// 이미지파일 경로(썸네일)
-		imgsrc = "${path}/resources/upload/displayFile?fileName=" + fullName;
+		imgsrc = "/spring/upload/displayFile?fileName=" + fullName;
 		console.log(imgsrc);
 
 		// 업로드파일명
@@ -29,7 +29,7 @@ function getFileInfo(fullName) {
 		console.log(end);
 
 		// 원본이미지파일 디렉토리
-		getLink = "${path}/resources/upload/displayFile?fileName=" + front + end;
+		getLink = "/spring/upload/displayFile?fileName=" + front + end;
 		console.log(getLink);
 	} else { // 이미지파일이 아닐 경우
 		// UUID를 제외한 원본파일명
@@ -37,7 +37,7 @@ function getFileInfo(fullName) {
 		console.log(fileLink);
 
 		// 일반파일 디렉토리
-		getLink = "${path}/resources/upload/displayFile?fileName=" + fullName;
+		getLink = "/spring/upload/displayFile?fileName=" + fullName;
 		console.log(getLink);
 	}
 	// 목록에 출력할 원본파일명
