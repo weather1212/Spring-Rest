@@ -36,4 +36,19 @@ public class HomeController {
 		return "home";
 	}
 
+	// doA 매핑
+	@RequestMapping("/doA")
+	public String doA() {
+		logger.info("doA....");
+		return "home";
+	}
+
+	// doB 매핑
+	@RequestMapping("/doB")
+	public String doB(Model model) {
+		logger.info("doB....");
+		model.addAttribute("result", "do b result");
+		return "home";
+	}
+
 }

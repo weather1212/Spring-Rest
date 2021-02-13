@@ -27,7 +27,8 @@
 	</beans:bean>
 
 	<!-- spring bean 을 태그로 등록하지 않고 자동으로 검색(auto scan) -->
-	<context:component-scan base-package="com.hoseong.spring.controller" />
+	<context:component-scan
+		base-package="com.hoseong.spring.controller" />
 
 	<!-- 파일업로드에 필요한 bean -->
 	<beans:bean id="multipartResolver"
@@ -36,13 +37,27 @@
 		<beans:property name="maxUploadSize" value="10485760" />
 		<beans:property name="defaultEncoding" value="UTF-8" />
 	</beans:bean>
-	
+
 	<!-- 파일업로드를 위한 디렉토리 설정 -->
 	<!-- String uploadPath = new String("업로드경로") -->
 	<beans:bean id="uploadPath" class="java.lang.String">
 		<!-- 파일업로드 디렉토리 -->
-		<beans:constructor-arg value="C:\\Git\\springBoard\\Spring-Shop\\src\\main\\webapp\\resources\\upload" />
+		<beans:constructor-arg
+			value="C:\\Git\\springBoard\\Spring-Shop\\src\\main\\webapp\\resources\\upload" />
 	</beans:bean>
+
+	<!-- 인터셉터 bean 설정 -->
+	<beans:bean id="sampleInterceptor" class="com.hoseong.spring.interceptor.SampleInterceptor" />
+		
+	<interceptors>
+		<interceptor>
+			<!-- 인터셉터 매핑 -->
+			<mapping path="/doA" />
+			<mapping path="/doB" />
+			<beans:ref bean="sampleInterceptor"/>
+		</interceptor>
+	</interceptors>
+
 
 
 </beans:beans>
