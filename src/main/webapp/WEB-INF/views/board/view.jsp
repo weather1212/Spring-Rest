@@ -44,13 +44,13 @@
 				document.form1.content.focus();
 				return;
 			}
-			document.form1.acrion = "${path}/board/update";
+			document.form1.action = "${path}/board/update";
 			// 첨부파일 이름을 form에 추가
 			var that = $("#form1");
 			var str = "";
 			// 태그들.each(함수)
 			// id가 uploadedList인 태그 내부에 있는 hidden태그들
-			$("#uploadedList .file").each(function(i) {
+			$("#fileDrop .file").each(function(i) {
 				str += "<input type='hidden' name='files["+i+"]' value='"+$(this).val()+ "'>";
 			});
 			// form에 hidden태그들을 추가
@@ -84,50 +84,53 @@
 		// originalEvent: javascript의 이벤트
 		$("#fileDrop").on("drop", function(event) {
 			event.preventDefault(); // 기본 효과를 막음
-			// 드래그된 파일의 정보
-			var files = event.originalEvent.dataTransfer.files;
-			// 첫번째 파일
-			var file = files[0];
-			// 콘솔에서 파일정보 확인
-			console.log(file);
-
-			// ajax로 전달할 폼 객체
-			var formData = new FormData();
-			// 폼 객체 파일추가, append("변수명", 값)
-			formData.append("file", file);
-
-			// file을 전달할 때는 ajax옵션 속성을  type:post, processDdata: false, contentType:false로 설정한다.
-			$.ajax({
-				type : "post",
-				url : "${path}/upload/uploadAjax",
-				data : formData,
-				dataType : "text",
-				// processDdata: true => get 방식, false => post 방식
-				processData : false,
-				// contentType: true => application/x-www-form-urlencoded,
-				//				false => multipart/form-data
-				contentType : false,
-				success : function(data) {
-					console.log(data);
-					// 첨부 파일의 정보
-					var fileInfo = getFileInfo(data);
-					// 하이퍼링크
-					var html = "<a href='"+fileInfo.getLink+"'>" + fileInfo.fileName + "</a><br>";
-					// hidden 태그 추가
-					html += "<input type='hidden' class='file' value='"+fileInfo.fullName+"'>";
-					// div에 추가
-					$("#uploadedList").append(html);
-				},
-				error : function(request, status, error) { //status-상태, error-에러 내용
-					console.log("데이터 전송에 실패했습니다. : "+ "status : " + request.status + ", error : " + error);
-				}
-			});
-
+			// 로그인한 사용자가 작성자일 경우에만 파일첨부 추가 가능
+			if(${sessionScope.userId == dto.writer }) {
+				// 드래그된 파일의 정보
+				var files = event.originalEvent.dataTransfer.files;
+				// 첫번째 파일
+				var file = files[0];
+				// 콘솔에서 파일정보 확인
+				console.log(file);
+	
+				// ajax로 전달할 폼 객체
+				var formData = new FormData();
+				// 폼 객체 파일추가, append("변수명", 값)
+				formData.append("file", file);
+	
+				// file을 전달할 때는 ajax옵션 속성을  type:post, processDdata: false, contentType:false로 설정한다.
+				$.ajax({
+					type : "post",
+					url : "${path}/upload/uploadAjax",
+					data : formData,
+					dataType : "text",
+					// processDdata: true => get 방식, false => post 방식
+					processData : false,
+					// contentType: true => application/x-www-form-urlencoded,
+					//				false => multipart/form-data
+					contentType : false,
+					success : function(data) {
+						console.log(data);
+						// 첨부 파일의 정보
+						var fileInfo = getFileInfo(data);
+						// 하이퍼링크
+						var html = "<div><a href='"+fileInfo.getLink+"' target='_blank'>" + fileInfo.fileName + "</a>&nbsp;&nbsp";
+						html += "<a href = '#' class='fileDel' data-src='" + this + "'>[삭제]</a>";
+						// hidden 태그 추가
+						html += "<input type='hidden' class='file' value='"+fileInfo.fullName+"'></div>";
+						// div에 추가
+						$("#fileDrop").append(html);
+					},
+					error : function(request, status, error) { //status-상태, error-에러 내용
+						console.log("데이터 전송에 실패했습니다. : "+ "status : " + request.status + ", error : " + error);
+					}
+				});	
+			}
 		});
 
 		// 3. 첨부파일 삭제 ajax 요청
 		// 태그.on("이벤트", "자손태그", 이벤트 핸들러)
-		$("#uploadedList").on("click", ".fileDel", function(event) {
+		$("#fileDrop").on("click", ".fileDel", function(event) {
 			var that = $(this); //클릭한 a태그
 			$.ajax({
 				type : "post",
@@ -324,12 +327,12 @@
 					// each문 내부의 this : 각 step에 해당되는 값을 의미
 					var fileInfo = getFileInfo(this);
 					// a태그안에는 파일의 링크를 걸어주고, 목록에는 파일의 이름을 출력
-					var html = "<div><a href='" + fileInfo.getLink + "'>" + fileInfo.fileName + "</a>&nbsp;&nbsp;";
+					var html = "<div><a href='" + fileInfo.getLink + "' target='_blank'>" + fileInfo.fileName + "</a>&nbsp;&nbsp;";
 					// ***로그인한 회원이 작성자일 경우 삭제 버튼
 					if(${sessionScope.userId == dto.writer }) {
 						html += "<a href = '#' class='fileDel' data-src='" + this + "'>[삭제]</a></div>";
 					}
-					$("#uploadedList").append(html);
+					$("#fileDrop").append(html);
 				});
 			},
 			error : function(request, status, error) { //status-상태, error-에러 내용
@@ -350,9 +353,9 @@
 
 #fileDrop {
 	width: 600px;
-	height: 70px;
+	height:auto;
+	padding: 10px 0px; 
 	border: 1px dotted gray;
-	background-color: #90909050;
 }
 </style>
 </head>
@@ -403,7 +406,7 @@
 					<input type="hidden" name="bno" value="${dto.bno}">
 					<input type="hidden" name="writer" value="${dto.writer}">
 					<c:if test="${sessionScope.userId == dto.writer }">
-						<button type="button" id="btnUpdete">수정</button>
+						<button type="button" id="btnUpdate">수정</button>
 						<button type="button" id="btnDelete">삭제</button>
 					</c:if>
 					<button type="button" id="btnList">목록으로</button>

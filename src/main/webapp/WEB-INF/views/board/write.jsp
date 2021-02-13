@@ -57,15 +57,33 @@
 					console.log("파일인포쩜getLink : " + fileInfo.getLink);
 					console.log("파일인포쩜fullName : " + fileInfo.fullName);
 					// 하이퍼링크
-					var html = "<a href='"+fileInfo.getLink+"'>";
-					html += "<img src='" + fileInfo.imgsrc + "'>" +fileInfo.fileName + "</a><br>";
+					var html = "<div><img src='" + fileInfo.imgsrc + "'><br>" +fileInfo.fileName;
+					html += "<a href = '#' class='fileDel' data-src='" + this + "'>[삭제]</a></div>";
 					// hidden 태그 추가
 					html += "<input type='hidden' class='file' value='"+fileInfo.fullName+"'>";
 					// div에 추가
-					$("#uploadedList").append(html);
+					$(".fileDrop").append(html);
 				}
 			});
 
+		});
+		
+		// 첨부파일 삭제 ajax 요청
+		// 태그.on("이벤트", "자손태그", 이벤트 핸들러)
+		$(".fileDrop").on("click", ".fileDel", function(event) {
+			var that = $(this); //클릭한 a태그
+			$.ajax({
+				type : "post",
+				url : "${path}/upload/deleteFile",
+				// data: "fileName=" + $(this).attr("data-src") = {fileName:$(this).attr("data-src")}
+				data : {fileName : $(this).attr("data-src")},
+				dataType : "text",
+				success : function(result) {
+					if (result == "deleted") {
+						that.parent("div").remove();
+					}
+				}
+			});
 		});
 		
 		// 게시글 등록 버튼 클릭
@@ -97,7 +115,7 @@
 			var str = "";
 			// 태그들.each(함수)
 			// id가 uploadedList인 태그 내부에 있는 hidden태그들
-			$("#uploadedList .file").each(function(i){
+			$(".fileDrop .file").each(function(i){
 				str += "<input type='hidden' name='files["+i+"]' value='"+$(this).val()+"'>";
 			});
 			// form에 hidden태그들을 추가
@@ -117,9 +135,9 @@
 /* 첨부파일을 드래그할 영역의 스타일 */
 .fileDrop {
 	width: 600px;
-	height: 70px;
+	height: auto;
+	padding: 10px 0px; 
 	border: 2px dotted gray;
-	background-color: #90909050;
 }
 </style>
 </head>
