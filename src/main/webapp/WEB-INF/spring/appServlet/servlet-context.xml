@@ -47,17 +47,30 @@
 	</beans:bean>
 
 	<!-- 인터셉터 bean 설정 -->
-	<beans:bean id="sampleInterceptor" class="com.hoseong.spring.interceptor.SampleInterceptor" />
-		
+	<beans:bean id="sampleInterceptor"
+		class="com.hoseong.spring.interceptor.SampleInterceptor" />
+
+	<!-- 로그인 체크 Interceptor bean -->
+	<beans:bean id="loginInterceptor"
+		class="com.hoseong.spring.interceptor.LoginInterceptor" />
+
 	<interceptors>
 		<interceptor>
 			<!-- 인터셉터 매핑 -->
 			<mapping path="/doA" />
 			<mapping path="/doB" />
-			<beans:ref bean="sampleInterceptor"/>
+			<beans:ref bean="sampleInterceptor" />
+		</interceptor>
+		<!-- 로그인 체크 Interceptor mapping -->
+		<interceptor>
+			<!-- 참조할 로그인 체크 bean -->
+			<mapping path="/board/write" />
+			<mapping path="/board/writeAction" />
+			<mapping path="/board/update" />
+			<mapping path="/board/delete" />
+			<mapping path="/reply/writeRest" />
+			<beans:ref bean="loginInterceptor" />
 		</interceptor>
 	</interceptors>
-
-
 
 </beans:beans>

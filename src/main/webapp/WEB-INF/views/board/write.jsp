@@ -6,7 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>게시글 작성</title>
 <%@ include file="../include/header.jsp"%>
-<%@ include file="../include/sessionCheck.jsp"%>
+<!-- 로그인 인증처리 Interceptor로 대신 -->
+<%-- <%@ include file="../include/sessionCheck.jsp"%> --%>
 <script type="text/javascript" src="${path}/resources/js/common.js"></script>
 <script>
 	$(document).ready(function() {
