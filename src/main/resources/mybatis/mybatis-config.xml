@@ -11,5 +11,7 @@
 			alias="ReplyVO" />
 		<typeAlias type="com.hoseong.spring.vo.member.MemberVO"
 			alias="MemberVO" />
+		<typeAlias type="com.hoseong.spring.vo.shop.ProductVO"
+			alias="ProductVO" />
 	</typeAliases>
 </configuration>

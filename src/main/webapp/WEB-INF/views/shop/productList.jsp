@@ -21,7 +21,7 @@
 				<td>${row.productId }</td>
 				<td>
 					<a href="${path }/shop/product/detail/${row.productId}"> <img alt=""
-						src="${path }/images/${row.productUrl}" width="120px" height="110px"
+						src="${productImagePath }\\resources\\images\\${row.productUrl}" width="120px" height="110px"
 					>
 					</a>
 				</td>
