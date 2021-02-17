@@ -20,6 +20,7 @@ a:hover {
 }
 </style>
 
+<!-- 일반 메뉴 -->
 <a href="${path}/board/list">BOARD</a> |
 <a href="${path}/upload/uploadForm">Upload</a> |
 <a href="${path}/upload/uploadAjax">Upload(AJAX)</a> |
@@ -28,14 +29,15 @@ a:hover {
 
 <!-- 관리자 권한일 경우 -->
 <c:if test="${sessionScope.adminId != null }">
-<a href="${path}/shop/product/write">상품등록</a> |
+	<a href="${path}/shop/product/write">상품등록</a> |
 </c:if>
 
+<!-- 로그인, 로그아웃 -->
 <c:choose>
 	<c:when test="${sessionScope.userId == null}">
 		<a href="${path}/member/login">LOGIN</a> |
 		<a href="${path}/member/join">JOIN</a> |
-		<a href="${path}/admin/login">ADMIN</a>
+		<a href="${path}/admin/login">!ADMIN!</a>
 	</c:when>
 	<c:otherwise>
 		${sessionScope.userName}님이 로그인중입니다.

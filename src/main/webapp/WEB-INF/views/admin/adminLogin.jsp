@@ -35,8 +35,8 @@
 </head>
 <body>
 	<%@ include file="../include/menu.jsp"%>
-	<h2>LOGIN</h2>
-	<form action="${path }/member/loginCheck" name="form1" method="post">
+	<h2>!ADMIN LOGIN!</h2>
+	<form action="${path }/admin/loginCheck" name="form1" method="post">
 		<table border="1" style="width: 400px;">
 			<tr>
 				<td>아이디</td>

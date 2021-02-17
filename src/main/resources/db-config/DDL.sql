@@ -1,3 +1,4 @@
+-- 게시판 ########################################################
 -- board 테이블 생성
 create table board (
 bno number not null constraint board_bno_pk primary key,
@@ -17,6 +18,7 @@ increment by 1;
 ALTER TABLE board add show VARCHAR2(10) DEFAULT 'y' NOT NULL;
 
 
+-- 회원 ########################################################
 -- member 테이블 생성
 create table member (
 user_id varchar2(50) not null CONSTRAINT member_userid_pk primary key,
@@ -28,6 +30,7 @@ user_updatedate date
 );
 
 
+-- 댓글 ########################################################
 -- reply 테이블 생성
 create table reply (
 rno number not null constraint reply_rno_pk primary key,
@@ -49,6 +52,7 @@ start with 1
 increment by 1;
 
 
+-- 파일 업로드 ########################################################
 -- 첨부파일 테이블 생성
 CREATE TABLE attach (
 fullname VARCHAR2(150) CONSTRAINT attach_fullname_pk PRIMARY KEY,
@@ -62,6 +66,7 @@ ADD CONSTRAINT attach_bno_fk
 FORE IGN KEY(bno) REFERENCES board(bno);
 
 
+-- 상품 ########################################################
 -- product 테이블  생성
 CREATE TABLE product (
 product_id NUMBER CONSTRAINT product_productid_pk primary key,	-- 상품 번호
@@ -82,6 +87,7 @@ INSERT INTO product VALUES (1007,'버켄스탁',139000,'발이 가진 본연의 
 INSERT INTO product VALUES (1008,'컨버스 척테일러 1970s',89000,'컨버스 스테디셀러 척 70 빈티지 캔버스 제품은 아이코닉한 디자인과 빈티지한 매력을 선보입니다 .','converse.jpg');
 
 
+-- 장바구니 ########################################################
 -- cart 테이블 생성
 CREATE TABLE cart (
 cart_id NUMBER CONSTRAINT cart_cartid_pk primary key,
@@ -104,3 +110,15 @@ FOREIGN KEY(user_id) REFERENCES member(user_id);
 ALTER TABLE cart
 ADD CONSTRAINT cart_productid_fk
 FOREIGN KEY(product_id) REFERENCES product(product_id);
+
+
+-- 관리자 ########################################################
+-- admin 테이블 생성
+create table admin (
+user_id varchar2(50) not null CONSTRAINT admin_userid_pk primary key,
+user_pw varchar2(50) not null,
+user_name varchar2(50),
+user_email varchar2(200) not null,
+user_regdate date default sysdate,
+user_updatedate date default sysdate
+);
