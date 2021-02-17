@@ -1,21 +1,17 @@
 package com.hoseong.spring.service.member;
 
-import java.util.List;
-
-import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hoseong.spring.dao.board.BoardDAO;
 import com.hoseong.spring.dao.member.MemberDAO;
-import com.hoseong.spring.vo.board.BoardVO;
 import com.hoseong.spring.vo.member.MemberVO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
 
-	@Inject
+	@Autowired
 	private MemberDAO memberDao;
 
 	// 회원 로그인 체크

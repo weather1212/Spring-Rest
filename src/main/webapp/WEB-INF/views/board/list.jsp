@@ -90,7 +90,7 @@
 						<td colspan="5" align="left">
 							<c:if test="${row.recnt > 0 }">
 								<a
-									href="${path}/board/view.do?bno=${row.bno}&curPage=${map.boardPagination.curPage}&searchOption=${map.searchOption}&keyword=${map.keyword}"
+									href="${path}/board/view?bno=${row.bno}&curPage=${map.boardPagination.curPage}&searchOption=${map.searchOption}&keyword=${map.keyword}"
 								>삭제된 게시물입니다. <!-- 댓글이 있으면 게시글 이름 옆에 출력 --> <span style="color: red;">(${row.recnt })</span>
 								</a>
 							</c:if>

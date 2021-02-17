@@ -1,10 +1,10 @@
 package com.hoseong.spring.controller.member;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ public class MemberController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
-	@Inject
+	@Autowired
 	MemberService memberService;
 
 	// 로그인 화면
@@ -39,7 +39,7 @@ public class MemberController {
 		ModelAndView mav = new ModelAndView();
 
 		if (result == true) { // 로그인 성공 시
-			mav.setViewName("home"); // 홈으로 이동
+			mav.setViewName("redirect:/"); // 홈으로 이동
 			mav.addObject("msg", "success");
 		} else { // 로그인 실패 시
 			mav.setViewName("member/login"); // 로그인 페이지로 이동

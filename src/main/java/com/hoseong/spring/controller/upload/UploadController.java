@@ -7,11 +7,11 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import javax.annotation.Resource;
-import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,7 +31,7 @@ import com.hoseong.spring.util.UploadFileUtils;
 @Controller
 public class UploadController {
 	
-	@Inject
+	@Autowired
 	BoardService boardService;
 
 	private static final Logger logger = LoggerFactory.getLogger(UploadController.class);

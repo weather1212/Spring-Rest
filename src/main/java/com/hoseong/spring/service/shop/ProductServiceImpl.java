@@ -2,8 +2,7 @@ package com.hoseong.spring.service.shop;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hoseong.spring.dao.shop.ProductDAO;
@@ -12,7 +11,7 @@ import com.hoseong.spring.vo.shop.ProductVO;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-	@Inject
+	@Autowired
 	ProductDAO productDAO;
 
 	// 01. 상품목록

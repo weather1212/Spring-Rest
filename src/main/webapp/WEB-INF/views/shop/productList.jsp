@@ -8,8 +8,8 @@
 </head>
 <body>
 	<%@ include file="../include/menu.jsp"%>
-	<h2>상품 목록</h2>
-	<table border="1">
+	<h2>Shoes</h2>
+	<table border="1" style="border-collapse: collapse; text-align: center;">
 		<tr>
 			<th>상품 ID번호</th>
 			<th>상품 이미지</th>
@@ -20,9 +20,8 @@
 			<tr>
 				<td>${row.productId }</td>
 				<td>
-					<a href="${path }/shop/product/detail/${row.productId}"> <img alt=""
-						src="${productImagePath }\\resources\\images\\${row.productUrl}" width="120px" height="110px"
-					>
+					<a href="${path }/shop/product/detail/${row.productId}">
+					<img alt="" src="${path}/resources/images/${row.productUrl}" width="120px" height="120px">
 					</a>
 				</td>
 				<td>

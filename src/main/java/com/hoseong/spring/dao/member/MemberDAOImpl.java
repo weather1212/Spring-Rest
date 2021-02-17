@@ -1,16 +1,11 @@
 package com.hoseong.spring.dao.member;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.hoseong.spring.vo.board.BoardVO;
 import com.hoseong.spring.vo.member.MemberVO;
 
 @Repository
@@ -18,7 +13,7 @@ public class MemberDAOImpl implements MemberDAO {
 
 	// SqlSession 객체를 스프링에서 생성하여 주입
 	// 의존관계 주입, 느슨한 결합
-	@Inject
+	@Autowired
 	private SqlSession sqlSession;
 
 	// 회원 로그인 체크

@@ -2,20 +2,18 @@ package com.hoseong.spring.service.board;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hoseong.spring.dao.board.ReplyDAO;
 import com.hoseong.spring.vo.board.ReplyVO;
 
-import oracle.net.aso.b;
-
 @Service
 public class ReplyServiceImpl implements ReplyService {
 
-	@Inject
+	@Autowired
 	private ReplyDAO replyDAO;
 
 	// 댓글 목록

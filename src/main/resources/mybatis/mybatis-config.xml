@@ -13,5 +13,8 @@
 			alias="MemberVO" />
 		<typeAlias type="com.hoseong.spring.vo.shop.ProductVO"
 			alias="ProductVO" />
+		<typeAlias type="com.hoseong.spring.vo.shop.CartVO"
+			alias="CartVO" />
+			
 	</typeAliases>
 </configuration>

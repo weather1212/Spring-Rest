@@ -2,9 +2,9 @@ package com.hoseong.spring.controller.board;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,7 +32,7 @@ import com.hoseong.spring.vo.board.ReplyVO;
 @RequestMapping("/reply/*")
 public class ReplyController {
 
-	@Inject
+	@Autowired
 	ReplyService replyService;
 
 	// 1_1. 댓글 입력(파라미터 전달 방식)

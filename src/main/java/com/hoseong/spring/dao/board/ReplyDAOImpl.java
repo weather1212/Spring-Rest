@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hoseong.spring.vo.board.ReplyVO;
@@ -14,7 +13,7 @@ import com.hoseong.spring.vo.board.ReplyVO;
 @Repository
 public class ReplyDAOImpl implements ReplyDAO {
 
-	@Inject
+	@Autowired
 	SqlSession sqlSession;
 
 	// 댓글 목록

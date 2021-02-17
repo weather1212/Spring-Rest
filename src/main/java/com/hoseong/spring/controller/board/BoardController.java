@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,10 +27,10 @@ public class BoardController {
 
 	// 의존 관계 주입 => BoardServiceImpl 생성
 	// IoC 의존관계 역전
-	@Inject
+	@Autowired
 	BoardService boardService;
 	
-	@Inject	//ReplyService 주입(ReplyService의 댓글 개수를 구하는 메서드 호출
+	@Autowired	//ReplyService 주입(ReplyService의 댓글 개수를 구하는 메서드 호출
 	ReplyService replyService;
 
 	// 게시글 목록

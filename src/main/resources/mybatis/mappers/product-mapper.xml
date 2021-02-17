@@ -9,11 +9,11 @@
 	<select id="listProduct"
 		resultType="ProductVO">
 		SELECT
-		product_id AS productId
-		, product_name AS productName
-		, product_price AS productPrice
-		, product_desc AS productDesc
-		, product_url AS productUrl
+		product_id AS productId, 
+		product_name AS productName, 
+		product_price AS productPrice, 
+		product_desc AS productDesc, 
+		product_url AS productUrl
 		FROM product ORDER BY product_name
 	</select>
 
@@ -21,11 +21,11 @@
 	<select id="detailProduct"
 		resultType="ProductVO">
 		SELECT
-		product_id AS productId
-		, product_name AS productName
-		, product_price AS productPrice
-		, product_desc AS productDesc
-		, product_url AS productUrl
+		product_id AS productId, 
+		product_name AS productName, 
+		product_price AS productPrice, 
+		product_desc AS productDesc, 
+		product_url AS productUrl
 		FROM product
 		WHERE product_id = #{productId}
 	</select>
