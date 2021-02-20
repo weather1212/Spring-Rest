@@ -22,7 +22,7 @@ public class ProductDAOImpl implements ProductDAO {
 
 	// 02. 상품상세
 	@Override
-	public ProductVO detailProsuct(int productId) {
+	public ProductVO detailProduct(int productId) {
 		return sqlSession.selectOne("productMapper.detailProduct", productId);
 	}
 
@@ -36,6 +36,18 @@ public class ProductDAOImpl implements ProductDAO {
 	@Override
 	public void deleteProduct(int productId) {
 		sqlSession.delete("productMapper.deleteProduct", productId);
+	}
+	
+	// 05. 상품 추가
+	@Override
+	public void insertProduct(ProductVO vo) {
+		sqlSession.insert("productMapper.insertProduct", vo);
+	}
+	
+	// 06. 상품이미지 삭제를 위한 이미지파일 정보
+	@Override
+	public String fileInfo(int productId) {
+		return sqlSession.selectOne("productMapper.fileInfo", productId);
 	}
 
 }

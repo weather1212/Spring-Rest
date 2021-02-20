@@ -29,11 +29,42 @@
 		FROM product
 		WHERE product_id = #{productId}
 	</select>
-
-
-
-
-
+	
+	<!-- 03. 상품 추가하기 -->
+	<insert id="insertProduct">
+		INSERT INTO product 
+		VALUES (
+			product_seq.NEXTVAL
+			, #{productName}
+			, #{productPrice}
+			, #{productDesc}
+			, #{productUrl}
+		)
+	</insert>
+	
+	<!-- 04. 상품 수정/편집하기 -->
+	<update id="updateProduct">
+		UPDATE product
+		SET product_name = #{productName}
+			, product_price = #{productPrice}
+			, product_desc = #{productDesc}
+			, product_url = #{productUrl}
+		WHERE
+			product_id = #{productId}
+	</update>
+	
+	<!-- 05. 상품 레코드 삭제처리 -->
+	<delete id="deleteProduct">
+		DELETE FROM product
+		WHERE product_id = #{productId}
+	</delete>
+	
+	<!-- 06. 삭제를 위한 상품 이미지 파일이름 select -->
+	<select id="fileInfo" resultType="String">
+		SELECT 	product_url AS productUrl
+		FROM product
+		WHERE product_id = #{productId}
+	</select>
 
 </mapper>
  

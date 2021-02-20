@@ -22,8 +22,8 @@ public class ProductServiceImpl implements ProductService {
 
 	// 02. 상품 상세
 	@Override
-	public ProductVO detailProsuct(int productId) {
-		return productDAO.detailProsuct(productId);
+	public ProductVO detailProduct(int productId) {
+		return productDAO.detailProduct(productId);
 	}
 
 	// 03. 상품수정
@@ -36,6 +36,18 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void deleteProduct(int productId) {
 		productDAO.deleteProduct(productId);
+	}
+
+	// 05. 상품추가
+	@Override
+	public void insertProduct(ProductVO vo) {
+		productDAO.insertProduct(vo);
+	}
+
+	// 06. 상품이미지 삭제를 위한 이미지파일 정보
+	@Override
+	public String fileInfo(int productId) {
+		return productDAO.fileInfo(productId);
 	}
 
 }
