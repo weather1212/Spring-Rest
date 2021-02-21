@@ -49,7 +49,7 @@
 			<tr>
 				<td>상품 이미지</td>
 				<td>
-					<img src="${path}/images/${vo.productUrl}" height="300px" width="310px"> <br>
+					<img src="${path}/resources/images/${vo.productUrl}" height="300px" width="310px"> <br>
 					<input type="file" id="productPhoto" name="productPhoto">
 				</td>
 			</tr>

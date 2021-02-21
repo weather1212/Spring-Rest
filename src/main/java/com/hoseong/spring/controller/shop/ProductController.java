@@ -40,7 +40,7 @@ public class ProductController {
 	// 3. 상품등록 페이지 매핑
 	@RequestMapping("write")
 	public String wirte() {
-		return "/shop/productWirte";
+		return "/shop/productWrite";
 	}
 
 	// 4. 상품등록 처리 매핑
