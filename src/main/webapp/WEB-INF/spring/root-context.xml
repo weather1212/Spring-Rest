@@ -13,6 +13,7 @@
 
 	<context:component-scan base-package="com.hoseong.spring.service"></context:component-scan>
 	<context:component-scan base-package="com.hoseong.spring.dao"></context:component-scan>
+	<context:component-scan base-package="com.hoseong.spring.aop"></context:component-scan>
 
 	<!-- DataSource 설정 -->
 	<context:property-placeholder

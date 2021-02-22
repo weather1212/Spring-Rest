@@ -49,10 +49,8 @@ public class BoardController {
 		
 		List<BoardVO> list = boardService.listAll(start, end, searchOption, keyword);
 
-		System.out.println("현재 페이지 : " + curPage);
-		System.out.println("조건 : " + searchOption);
-		System.out.println("키워드 : " + keyword);
-		System.out.println("레코드 개수 : " + count);
+		// 로그 출력
+		System.out.println("현재 페이지 : " + curPage + ", 조건 : " + searchOption + ", 키워드 : " + keyword + ", 레코드 개수 : " + count);
 
 		ModelAndView mav = new ModelAndView();
 
