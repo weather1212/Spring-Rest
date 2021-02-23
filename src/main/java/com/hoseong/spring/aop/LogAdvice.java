@@ -22,7 +22,7 @@ public class LogAdvice {
 	// 컨트롤러, 서비스, DAO의 모든 method를 실행 전후에 logPrint method가 자동으로 실행된다.
 	// .. : 하위의 모든 디렉토리를 의미
 	// *(..) : * - 하위의 모든 메서드, (..) - 모든 매개변수
-	@Around("execution(* com.hoseong.spring.controller..*Controller.*(..))"
+	@Around("execution(* com.hoseong.spring.controller..*Controller.*(..)) "
 			+ " or execution(* com.hoseong.spring.service..*Impl.*(..))"
 			+ " or execution(* com.hoseong.spring.dao..*Impl.*(..))")
 	public Object logPrint(ProceedingJoinPoint joinPoint) throws Throwable {

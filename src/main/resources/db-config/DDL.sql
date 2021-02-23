@@ -63,7 +63,7 @@ regdate DATE DEFAULT SYSDATE
 -- attach bno 외래키 생성 (board(bno)참조)
 ALTER TABLE attach
 ADD CONSTRAINT attach_bno_fk
-FORE IGN KEY(bno) REFERENCES board(bno);
+FOREIGN KEY(bno) REFERENCES board(bno);
 
 
 -- 상품 ########################################################
@@ -122,3 +122,46 @@ user_email varchar2(200) not null,
 user_regdate date default sysdate,
 user_updatedate date default sysdate
 );
+
+-- AOP 테스트 ########################################################
+-- 1. tbl_user 테이블 생성
+CREATE TABLE tbl_user (
+userid VARCHAR2(50) not null CONSTRAINT user_userid_pk PRIMARY KEY,
+userpw VARCHAR2(50) NOT NULL,
+username VARCHAR2(100),
+userpoint NUMBER DEFAULT 0
+);
+
+-- 2. tbl_message 테이블 생성
+CREATE TABLE tbl_message(
+mid NUMBER CONSTRAINT message_mid_pk PRIMARY KEY,
+targetid VARCHAR2(50) NOT NULL,
+sender VARCHAR2(50) NOT NULL,
+message VARCHAR2(4000) NOT NULL,
+opendate DATE,
+senddate DATE DEFAULT SYSDATE
+);
+
+-- 3. tbl_message message 시퀀스 생성
+CREATE SEQUENCE message_seq
+START WITH 1
+INCREMENT BY 1;
+
+-- 4. tbl_message sender 외래키 생성 (tbl_user(userid)참조)
+ALTER TABLE tbl_message ADD CONSTRAINT message_sender_fk
+FOREIGN KEY (sender) REFERENCES tbl_user(userid);
+
+-- 5. tbl_message targetid 외래키 생성 (tbl_user(userid)참조)
+ALTER TABLE tbl_message ADD CONSTRAINT message_targetid_fk
+FOREIGN KEY (targetid) REFERENCES tbl_user(userid);
+
+-- tbl_user 테이블 더미 데이터 입력
+INSERT INTO tbl_user (userid, userpw, username) VALUES ('user01', '1234', 'yu');
+INSERT INTO tbl_user (userid, userpw, username) VALUES ('user02', '1234', 'kim');
+INSERT INTO tbl_user (userid, userpw, username) VALUES ('user03', '1234', 'park');
+INSERT INTO tbl_user (userid, userpw, username) VALUES ('user04', '1234', 'choi');
+INSERT INTO tbl_user (userid, userpw, username) VALUES ('user05', '1234', 'yoon');
+INSERT INTO tbl_user (userid, userpw, username) VALUES ('user06', '1234', 'yang');
+INSERT INTO tbl_user (userid, userpw, username) VALUES ('user07', '1234', 'cho');
+INSERT INTO tbl_user (userid, userpw, username) VALUES ('user08', '1234', 'lee');
+
