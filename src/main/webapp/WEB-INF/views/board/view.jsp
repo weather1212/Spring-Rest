@@ -114,7 +114,7 @@
 						// 첨부 파일의 정보
 						var fileInfo = getFileInfo(data);
 						// 하이퍼링크
-						var html = "<div><a href='"+fileInfo.getLink+"' target='_blank'>" + fileInfo.fileName + "</a>&nbsp;&nbsp";
+						var html = "<div><a href='"+fileInfo.getDisplayLink+"' target='_blank'>" + fileInfo.fileName + "</a>&nbsp;&nbsp";
 						html += "<a href = '#' class='fileDel' data-src='" + this + "'>[삭제]</a>";
 						// hidden 태그 추가
 						html += "<input type='hidden' class='file' value='"+fileInfo.fullName+"'></div>";
@@ -327,7 +327,7 @@
 					// each문 내부의 this : 각 step에 해당되는 값을 의미
 					var fileInfo = getFileInfo(this);
 					// a태그안에는 파일의 링크를 걸어주고, 목록에는 파일의 이름을 출력
-					var html = "<div><a href='" + fileInfo.getLink + "' target='_blank'>" + fileInfo.fileName + "</a>&nbsp;&nbsp;";
+					var html = "<div><a href='" + fileInfo.getDisplayLink + "' target='_blank'>" + fileInfo.fileName + "</a>&nbsp;&nbsp;";
 					// ***로그인한 회원이 작성자일 경우 삭제 버튼
 					if(${sessionScope.userId == dto.writer }) {
 						html += "<a href = '#' class='fileDel' data-src='" + this + "'>[삭제]</a></div>";

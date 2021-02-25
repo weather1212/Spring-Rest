@@ -48,18 +48,11 @@
 				//				false => multipart/form-data
 				contentType : false,
 				success : function(data) {
-					//로그 출력
-					console.log(data);
 					// 첨부 파일의 정보
 					var fileInfo = getFileInfo(data);
-					// 로그 출력
-					console.log("파일인포쩜fileName : " + fileInfo.fileName);
-					console.log("파일인포쩜imgsrc : " + fileInfo.imgsrc);
-					console.log("파일인포쩜getLink : " + fileInfo.getLink);
-					console.log("파일인포쩜fullName : " + fileInfo.fullName);
 					// 하이퍼링크
 					var html = "<div><img src='" + fileInfo.imgsrc + "'><br>" +fileInfo.fileName;
-					html += "<a href = '#' class='fileDel' data-src='" + this + "'>[삭제]</a></div>";
+					html += "<a href = '#' class='fileDel' data-src='" + data + "'>[삭제]</a></div>";
 					// hidden 태그 추가
 					html += "<input type='hidden' class='file' value='"+fileInfo.fullName+"'>";
 					// div에 추가

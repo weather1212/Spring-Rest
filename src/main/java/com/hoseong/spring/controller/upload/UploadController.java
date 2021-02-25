@@ -166,15 +166,16 @@ public class UploadController {
 		String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
 		// 이미지 파일 여부 검사
 		MediaType mType = MediaUtils.getMediaType(formatName);
+		
 		// 이미지의 경우(썸네일 + 원본파일 삭제), 이미지가 아니면 원본파일만 삭제
 		if (mType != null) { // 이미지 파일이면
-			// 썸네일 이미지 파일 추출
+			// 원본 이미지 파일 추출
 			String front = fileName.substring(0, 12);
 			String end = fileName.substring(14);
-			// 썸네일 이미지 삭제
+			// 원본 이미지 삭제
 			new File(uploadPath + (front + end).replace('/', File.separatorChar)).delete();
 		}
-		// 원본파일 삭제
+		// 원본파일 및 썸네일 이미지 삭제
 		new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
 		
 		// 레코드 삭제
